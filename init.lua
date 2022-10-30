@@ -1,33 +1,15 @@
+function requirePath(path) 
+  local files = io.popen('find "$HOME"/.config/nvim/lua/' .. path .. ' -type f')
 
-vim.cmd[[
-set number             
-set autoindent         
-set shiftwidth=2       
-set expandtab          
-set splitright         
-set clipboard=unnamed,unnamedplus 
-set hls                
-inoremap <silent> jj <ESC>
+  for file in files:lines() do
+    local req_file = file:gmatch('%/lua%/(.+).lua$'){0}:gsub('/', '.')
+    status_ok, _ = pcall(require, req_file)
 
+    if not status_ok then
+      vim.notify('Failed loading ' .. req_file, vim.log.levels.ERROR)
+    end
+  end
+end
 
-set list    
-tnoremap <Esc> <C-\><C-n>  
-
-noremap  <A-k> <C-w>W 
-inoremap <A-k> <Esc><C-w>W
-tnoremap <A-k> <C-\><C-n><C-w>W
-
-noremap  <A-o> <C-w>o
-inoremap <A-o> <Esc><C-w>o
-tnoremap <A-o> <C-\><C-n><C-w>o
-
-noremap  <A-;> :
-inoremap <A-;> <Esc><C-o>:
-tnoremap <A-;> <C-\><C-n><C-w>:
-
-noremap  <A-/> /
-inoremap <A-/> <Esc><C-o>/
-tnoremap <A-/> <C-\><C-n>/
-
-set ignorecase smartcase
-]]
+requirePath('user-config')
+requirePath('plugins')
