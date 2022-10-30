@@ -1,0 +1,9 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhistcnt =7
+let g:netrw_dirhist_7='/home/mizuiro/PROJECTS/ie03project-std5-team-sushi/db_data/mysql_data/sushidb'
+let g:netrw_dirhist_6='/home/mizuiro/PROJECTS/ie03project-std5-team-sushi/db_data/mysql_data'
+let g:netrw_dirhist_5='/home/mizuiro/PROJECTS/ie03project-std5-team-sushi/db_data'
+let g:netrw_dirhist_4='/home/mizuiro/.config/i3'
+let g:netrw_dirhist_3='/home/mizuiro/.jobgosh/log'
+let g:netrw_dirhist_2='/sys/class/leds/tpacpi::kbd_backlight'
+let g:netrw_dirhist_1='/home/mizuiro/PROJECTS/ctf/.git'
