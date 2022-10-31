@@ -1,13 +1,7 @@
-
-local Plug = vim.fn['plug#']
-
-vim.call('plug#begin', '~/.local/share/nvim/plugged/')
+local Plug = require 'usermod.vimplug'
+Plug.begin('~/.local/share/nvim/plugged/')
 -- ファイルツリー表示
 Plug 'scrooloose/nerdtree'
--- Start NERDTree and leave the cursor in it.
-vim.cmd[[autocmd VimEnter * NERDTree]]
--- Open the existing NERDTree on each new tab.
-vim.cmd[[autocmd BufWinEnter * if getcmdwintype() == '' | silent NERDTreeMirror | endif]]
 vim.cmd[[map <C-b> :NERDTreeToggle<CR>]]
 
 --vim.cmd[[
@@ -20,7 +14,18 @@ vim.cmd[[map <C-b> :NERDTreeToggle<CR>]]
 
 -- air line status bar
 Plug 'vim-airline/vim-airline'
---ruby 開発環境
---Plug 'vim-ruby/vim-ruby', {'for':'ruby'}
 
-vim.call('plug#end')
+-- dashboard-nvim(https://github.com/applejwjcat/dashboard-nvim)
+Plug 'glepnir/dashboard-nvim'
+
+-- fuzzing tool(https://github.com/junegunn/fzf.vim)
+Plug('ibhagwan/fzf-lua', {
+  branch='main'
+})
+
+--ruby 開発環境
+Plug('vim-ruby/vim-ruby', {
+  ft='ruby'
+})
+
+Plug.ends()

@@ -11,5 +11,5 @@ function requirePath(path)
   end
 end
 
-requirePath('user-config')
+requirePath('user_config')
 requirePath('plugins')
