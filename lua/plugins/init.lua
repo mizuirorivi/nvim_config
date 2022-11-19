@@ -52,11 +52,11 @@ Plug 'rcarriga/nvim-notify'
 -- })
 
 -- lua 環境
--- Plug 'thugcee/nvim-map-to-lua'
+Plug 'thugcee/nvim-map-to-lua'
 
--- Plug 'neovim/nvim-lspconfig'
--- Plug 'simrat39/rust-tools.nvim'
--- Plug 'nvim-lua/plenary.nvim'
--- Plug 'mfussenegger/nvim-dap'
+Plug 'neovim/nvim-lspconfig'
+Plug 'simrat39/rust-tools.nvim'
+Plug 'nvim-lua/plenary.nvim'
+Plug 'mfussenegger/nvim-dap'
 
 Plug.ends()
