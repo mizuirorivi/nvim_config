@@ -64,6 +64,10 @@ Plug 'mfussenegger/nvim-dap'
 -- for markdown 
 Plug 'iamcco/mathjax-support-for-mkdp'
 Plug 'iamcco/markdown-preview.vim'
+-- for multi cursole (https://github.com/mg979/vim-visual-multi)
+Plug('mg979/vim-visual-multi', {
+  branch='master'
+})
 
 Plug.ends()
 
