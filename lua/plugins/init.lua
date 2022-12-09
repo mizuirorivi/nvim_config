@@ -76,6 +76,7 @@ Plug.ends()
 -- fzf config
 vim.cmd[[
 nnoremap <c-P> <cmd>lua require('fzf-lua').files()<CR>
+nnoremap <c-F> <cmd>lua require('fzf-lua').grep()<CR>
 ]]
 -- nvim-dap config
 local dap = require"dap"
@@ -101,7 +102,6 @@ vim.api.nvim_set_keymap('n', '<F5>', [[:lua require"osv".launch({port = 8086})<C
 -- markdown preview config
 vim.cmd[[
 nmap <silent> <C-m> <Plug>MarkdownPreview
-imap <silent> <C-m> <Plug>MarkdownPreview
 ]]
 
 -- for OS X config
