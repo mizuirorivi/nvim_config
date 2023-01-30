@@ -4,6 +4,11 @@ Plug.begin('~/.config/nvim/plugged/')
 Plug 'scrooloose/nerdtree'
 vim.cmd[[map <C-b> :NERDTreeToggle<CR>]]
 Plug 'unkiwii/vim-nerdtree-sync'
+
+Plug 'beauwilliams/focus.nvim'
+
+Plug 'https://gitlab.com/yorickpeterse/nvim-window.git'
+
 --vim.cmd[[
 --  NERDTreeWinSize=32
 --  NERDTreeWinPos=--left--
@@ -110,4 +115,8 @@ nmap <silent> <C-m> <Plug>MarkdownPreview
 -- " or
 -- let g:mkdp_path_to_chrome = "/Applications/Google\\ Chrome.app/Contents/MacOS/Google\\ Chrome"
 --
---
+require("focus").setup()
+vim.cmd[[
+  map <silent> <leader>w :lua require('nvim-window').pick()<CR>
+]]
+
