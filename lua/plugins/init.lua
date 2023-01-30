@@ -11,9 +11,11 @@ Plug 'unkiwii/vim-nerdtree-sync'
 --  NERDTreeAutoDeleteBuffer=1
 --  NERDTreeAutoDeleteBuffer=1
 --]]
-
+--
+Plug 'sunjon/shade.nvim'
+-- color theme
 Plug 'tanvirtin/monokai.nvim'
-
+Plug 'ryanoasis/vim-devicons'
 -- air line status bar
 Plug 'vim-airline/vim-airline'
 -- dashboard-nvim(https://github.com/applejwjcat/dashboard-nvim) Plug 'glepnir/dashboard-nvim'
@@ -63,9 +65,6 @@ Plug 'jbyuki/one-small-step-for-vimkind'
 
 Plug 'mfussenegger/nvim-dap'
 
--- for markdown 
-Plug 'iamcco/mathjax-support-for-mkdp'
-Plug 'iamcco/markdown-preview.vim'
 -- for multi cursole (https://github.com/mg979/vim-visual-multi)
 Plug('mg979/vim-visual-multi', {
   branch='master'
