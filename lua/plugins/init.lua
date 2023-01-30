@@ -12,6 +12,8 @@ Plug 'unkiwii/vim-nerdtree-sync'
 --  NERDTreeAutoDeleteBuffer=1
 --]]
 
+Plug 'tanvirtin/monokai.nvim'
+
 -- air line status bar
 Plug 'vim-airline/vim-airline'
 -- dashboard-nvim(https://github.com/applejwjcat/dashboard-nvim) Plug 'glepnir/dashboard-nvim'
