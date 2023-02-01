@@ -19,7 +19,9 @@ Plug 'https://gitlab.com/yorickpeterse/nvim-window.git'
 --
 Plug 'sunjon/shade.nvim'
 -- color theme
-Plug 'tanvirtin/monokai.nvim'
+Plug('folke/tokyonight.nvim', { 
+  branch='main'
+})
 Plug 'ryanoasis/vim-devicons'
 -- air line status bar
 Plug 'vim-airline/vim-airline'
