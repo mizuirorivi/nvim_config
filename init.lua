@@ -15,12 +15,14 @@ end
 requirePath('user_config')
 requirePath('plugins')
 requirePath('plugins/config')
+
 vim.cmd[[
   set termguicolors
 ]]
+
 require "colorscheme"
+
 vim.cmd[[
-  
   let g:python3_host_prog = '/usr/bin/python'
   map <CS-c> "+y
   map <CS-v> "+p

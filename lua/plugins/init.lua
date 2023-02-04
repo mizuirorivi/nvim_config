@@ -6,7 +6,7 @@ vim.cmd[[map <C-b> :NERDTreeToggle<CR>]]
 Plug 'unkiwii/vim-nerdtree-sync'
 
 Plug 'beauwilliams/focus.nvim'
-
+-- for maniuplate window
 Plug 'https://gitlab.com/yorickpeterse/nvim-window.git'
 
 --vim.cmd[[
@@ -16,22 +16,23 @@ Plug 'https://gitlab.com/yorickpeterse/nvim-window.git'
 --  NERDTreeAutoDeleteBuffer=1
 --  NERDTreeAutoDeleteBuffer=1
 --]]
---
+
+
+-- Shade is a Neovim plugin that dims your inactive windows
 Plug 'sunjon/shade.nvim'
 -- color theme
 Plug('folke/tokyonight.nvim', { 
   branch='main'
 })
+
 Plug 'ryanoasis/vim-devicons'
 -- air line status bar
 Plug 'vim-airline/vim-airline'
--- dashboard-nvim(https://github.com/applejwjcat/dashboard-nvim) Plug 'glepnir/dashboard-nvim'
+
+
 -- fuzzing tool(https://github.com/junegunn/fzf.vim)
-Plug('ibhagwan/fzf-lua', {
-  branch='main'
-})
-Plug 'kyazdani42/nvim-web-devicons'
-Plug 'junegunn/fzf'
+Plug('ibhagwan/fzf-lua')
+
 --ruby 開発環境
 Plug('vim-ruby/vim-ruby', {
   ft='ruby'
@@ -40,12 +41,16 @@ Plug('vim-ruby/vim-ruby', {
 --lsp 環境設定
 Plug 'prabirshrestha/vim-lsp'
 Plug 'mattn/vim-lsp-settings'
-
+Plug 'prabirshrestha/async.vim'
 Plug 'prabirshrestha/asyncomplete.vim'
 Plug 'prabirshrestha/asyncomplete-lsp.vim'
 
+Plug 'ajh17/vimcompletesme'
 Plug 'Shougo/ddc.vim'
 Plug 'shun/ddc-vim-lsp'
+
+----------------------------------------
+
 
 -- comment機能  `gcc` でコメントアウト `gc` でコメント解除
 Plug 'joom/vim-commentary'
@@ -61,9 +66,10 @@ Plug 'rcarriga/nvim-notify'
 Plug 'thugcee/nvim-map-to-lua'
 
 Plug 'neovim/nvim-lspconfig'
+-- for rust
 Plug 'simrat39/rust-tools.nvim'
+-- for vim debug
 Plug 'nvim-lua/plenary.nvim'
-Plug 'mfussenegger/nvim-dap'
 
 --  one-small-step-for-vimkind (for lua debug)
 Plug 'jbyuki/one-small-step-for-vimkind'
@@ -86,6 +92,7 @@ vim.cmd[[
 nnoremap <c-P> <cmd>lua require('fzf-lua').files()<CR>
 nnoremap <c-F> <cmd>lua require('fzf-lua').grep()<CR>
 ]]
+
 -- nvim-dap config
 local dap = require"dap"
 dap.configurations.lua = { 
