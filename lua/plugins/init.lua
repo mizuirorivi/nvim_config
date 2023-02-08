@@ -8,7 +8,8 @@ Plug 'unkiwii/vim-nerdtree-sync'
 Plug 'beauwilliams/focus.nvim'
 
 Plug 'https://gitlab.com/yorickpeterse/nvim-window.git'
-
+-- project manager
+Plug 'https://github.com/nyngwang/NeoRoot.lua.git'
 --vim.cmd[[
 --  NERDTreeWinSize=32
 --  NERDTreeWinPos=--left--
