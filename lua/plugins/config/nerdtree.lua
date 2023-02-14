@@ -1,0 +1,1 @@
+vim.cmd[[map <C-b> :NERDTreeToggle<CR>]]
