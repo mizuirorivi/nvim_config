@@ -59,11 +59,14 @@ Plug 'jbyuki/one-small-step-for-vimkind'
 -- You will also need a comptabile DAP client
 
 Plug 'mfussenegger/nvim-dap'
-
+-- Intellisense engine
+Plug 'neoclide/coc.nvim'
 -- for multi cursole (https://github.com/mg979/vim-visual-multi)
 Plug('mg979/vim-visual-multi', {
   branch='master'
 })
+-- add text object
+Plug 'wellle/targets.vim'
 
 Plug('glacambre/firenvim', { 
   run=function(plugin_name)
