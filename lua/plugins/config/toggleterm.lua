@@ -1,7 +1,7 @@
-vim.cmd[[
-    map <Leader>t :ToggleTerm<CR>
-]]
+-- vim.cmd[[
+--     map <Leader>t :ToggleTerm<CR>
+-- ]]
 
-require("toggleterm").setup{
-  autochdir = true
-}
+-- require("toggleterm").setup{
+--   autochdir = true
+-- }
