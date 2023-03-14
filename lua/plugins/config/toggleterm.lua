@@ -1,14 +1,9 @@
 -- vim.cmd[[
---     map <Leader>t :ToggleTerm<CR>
--- ]]
+--     map <Leader>t :ToggleTerm<CR> ]]
 
-<<<<<<< HEAD
--- require("toggleterm").setup{
---   autochdir = true
-=======
 require("toggleterm").setup{
   size = 13,
-  open_mapping = [[<Leader>t]],
+  open_mapping = [[<Leader>tt]],
   autochdir = true,
   shade_filetypes = {},
   shade_terminals = true,
@@ -28,5 +23,4 @@ require("toggleterm").setup{
 --   start_in_insert = true,
 --   persist_size = true,
 --   direction = 'horizontal'
->>>>>>> 9e3612a721f5f8e52289395f5dca274285d2665d
 -- }

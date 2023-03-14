@@ -77,5 +77,7 @@ Plug('glacambre/firenvim', {
 Plug 'bakudankun/pico-8.vim'
 
 -- terminal
-Plug 'akinsho/toggleterm.nvim'
+-- Plug('akinsho/toggleterm.nvim',{
+--   tag='*'
+-- })
 Plug.ends()
