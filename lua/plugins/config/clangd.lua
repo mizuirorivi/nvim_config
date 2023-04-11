@@ -1,8 +1,10 @@
 vim.cmd[[
   let g:LanguageClient_serverCommands = {
+  \ 'efm': ['efm-langserver', '-logfile', '/tmp/efm.log', '-loglevel', '5'],
   \ 'cpp': ['clangd'],
   \ }
 ]]
+
 vim.cmd[[
 if executable('clangd')
     augroup lsp_clangd

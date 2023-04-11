@@ -7,6 +7,12 @@ vim.cmd[[
   nmap <leader>f  <Plug>(coc-format-selected)
   " Goto definition
   nmap <silent> gd <Plug>(coc-definition)
+  " Goto type definition
+  nmap <silent> gy <Plug>(coc-type-definition)
+  " Goto implementation
+  nmap <silent> gi <Plug>(coc-implementation)
+  " Goto references
+  nmap <silent> gr <Plug>(coc-references)
   " Open definition in a split window
   nmap <silent> gv :vsp<CR><Plug>(coc-definition)<C-W>L
   " defenetion global variable using let

@@ -52,7 +52,8 @@ Plug 'neovim/nvim-lspconfig'
 Plug 'simrat39/rust-tools.nvim'
 -- for vim debug
 Plug 'nvim-lua/plenary.nvim'
-
+-- for bookmarks
+Plug 'MattesGroeger/vim-bookmarks'
 --  one-small-step-for-vimkind (for lua debug)
 Plug 'jbyuki/one-small-step-for-vimkind'
 
