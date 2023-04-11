@@ -7,8 +7,7 @@ Plug 'unkiwii/vim-nerdtree-sync'
 
 -- Plug 'beauwilliams/focus.nvim'
 -- for maniuplate window
-Plug 'https://gitlab.com/yorickpeterse/nvim-window.git'
--- -- Shade is a Neovim plugin that dims your inactive windows
+Plug 'https://gitlab.com/yorickpeterse/nvim-window.git' -- -- Shade is a Neovim plugin that dims your inactive windows
 Plug 'sunjon/shade.nvim'
 -- color theme
 Plug('folke/tokyonight.nvim', { 
@@ -74,6 +73,8 @@ Plug('glacambre/firenvim', {
     vim.fn['firenvim#install'](0)
   end
 })
+-- undotree
+Plug 'mbbill/undotree'
 -- pico 8
 Plug 'bakudankun/pico-8.vim'
 

@@ -18,6 +18,7 @@ requirePath('plugins/config')
 
 vim.cmd[[
   set termguicolors
+  set undolevels=200
 ]]
 
 require "colorscheme"
@@ -27,4 +28,3 @@ vim.cmd[[
   map <CS-c> "+y
   map <CS-v> "+p
 ]]
-
