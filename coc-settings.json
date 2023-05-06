@@ -1,5 +1,17 @@
 {
   "coc.preferences.formatOnSaveFiletypes": ["py", "yaml", "json"],
   "python.linting.flake8Enabled": true,
-  "python.formatting.provider": "black"
+  "python.formatting.provider": "black",
+  "languageserver": {
+    "cmake": {
+      "command": "cmake-language-server",
+      "filetypes": ["cmake"],
+      "rootPatterns": [
+        "build/"
+      ],
+      "initializationOptions": {
+        "buildDirectory": "build"
+      }
+    }
+  }
 }

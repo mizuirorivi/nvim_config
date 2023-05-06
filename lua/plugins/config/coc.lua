@@ -2,9 +2,9 @@ vim.cmd[[
   vmap <leader>a <Plug>(coc-codeaction-selected)<CR>
   nmap <leader>a <Plug>(coc-codeaction-selected)<CR>
   
-  " Format action on <leader>f
-  vmap <leader>f  <Plug>(coc-format-selected)
-  nmap <leader>f  <Plug>(coc-format-selected)
+  " Format action on <leader>foc
+  vmap <leader>foc  <Plug>(coc-format-selected)
+  nmap <leader>foc  <Plug>(coc-format-selected)
   " Goto definition
   nmap <silent> gd <Plug>(coc-definition)
   " Goto type definition
