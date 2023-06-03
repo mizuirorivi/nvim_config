@@ -14,7 +14,7 @@ end
 
 requirePath('user_config')
 requirePath('plugins')
-requirePath('plugins/config')
+--requirePath('plugins/config')
 
 vim.cmd[[
   set termguicolors
