@@ -17,7 +17,8 @@ Plug 'ryanoasis/vim-devicons'
 -- air line status bar
 Plug 'vim-airline/vim-airline'
 -- fuzzing tool(https://github.com/junegunn/fzf.vim)
-Plug('ibhagwan/fzf-lua')
+Plug 'vijaymarupudi/nvim-fzf'
+Plug 'vijaymarupudi/nvim-fzf-commands'
 
 --ruby 開発環境
 Plug('vim-ruby/vim-ruby', {
@@ -31,13 +32,13 @@ Plug('vim-ruby/vim-ruby', {
 --lsp 環境設定
 Plug 'prabirshrestha/vim-lsp'
 Plug 'mattn/vim-lsp-settings'
-Plug 'prabirshrestha/async.vim'
-Plug 'prabirshrestha/asyncomplete.vim'
-Plug 'prabirshrestha/asyncomplete-lsp.vim'
+Plug 'folke/lsp-colors.nvim'
+-- Plug 'prabirshrestha/async.vim'
+-- Plug 'prabirshrestha/asyncomplete.vim'
+-- Plug 'prabirshrestha/asyncomplete-lsp.vim'
 
-Plug 'ajh17/vimcompletesme'
-Plug 'Shougo/ddc.vim'
-Plug 'shun/ddc-vim-lsp'
+-- Plug 'Shougo/ddc.vim'
+-- Plug 'shun/ddc-vim-lsp'
 
 -- comment機能  `gcc` でコメントアウト `gc` でコメント解除
 Plug 'joom/vim-commentary'

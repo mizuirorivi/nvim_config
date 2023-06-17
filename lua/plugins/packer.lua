@@ -40,6 +40,7 @@ return require('packer').startup(function()
   use 'nanozuki/tabby.nvim'
   -- Automatically set up your configuration after cloning packer.nvim
   -- Put this at the end after all plugins
+  use 'folke/lsp-colors.nvim'
   if packer_bootstrap then
     require('packer').sync()
   end
