@@ -17,6 +17,7 @@ Plug 'ryanoasis/vim-devicons'
 -- air line status bar
 Plug 'vim-airline/vim-airline'
 -- fuzzing tool(https://github.com/junegunn/fzf.vim)
+-- Plug('ibhagwan/fzf-lua')
 Plug 'vijaymarupudi/nvim-fzf'
 Plug 'vijaymarupudi/nvim-fzf-commands'
 
@@ -32,13 +33,13 @@ Plug('vim-ruby/vim-ruby', {
 --lsp 環境設定
 Plug 'prabirshrestha/vim-lsp'
 Plug 'mattn/vim-lsp-settings'
-Plug 'folke/lsp-colors.nvim'
--- Plug 'prabirshrestha/async.vim'
--- Plug 'prabirshrestha/asyncomplete.vim'
--- Plug 'prabirshrestha/asyncomplete-lsp.vim'
+Plug 'prabirshrestha/async.vim'
+Plug 'prabirshrestha/asyncomplete.vim'
+Plug 'prabirshrestha/asyncomplete-lsp.vim'
 
--- Plug 'Shougo/ddc.vim'
--- Plug 'shun/ddc-vim-lsp'
+Plug 'ajh17/vimcompletesme'
+Plug 'Shougo/ddc.vim'
+Plug 'shun/ddc-vim-lsp'
 
 -- comment機能  `gcc` でコメントアウト `gc` でコメント解除
 Plug 'joom/vim-commentary'
@@ -84,3 +85,19 @@ Plug 'bakudankun/pico-8.vim'
 --   tag='*'
 -- })
 Plug.ends()
+
+local function add_to_rtp(path)
+  local rtp = vim.o.runtimepath
+  local paths = {}
+  -- Split runtimepath into table
+  for p in rtp:gmatch("[^,]+") do
+    table.insert(paths, p)
+  end
+  -- Check if path is already in runtimepath
+  if not vim.tbl_contains(paths, path) then
+    rtp = rtp .. ',' .. path
+  end
+  vim.o.runtimepath = rtp
+end
+
+add_to_rtp('~/.config/nvim/plugged/lsp-colors.nvim')
