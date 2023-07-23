@@ -18,7 +18,7 @@ Plug 'ryanoasis/vim-devicons'
 Plug 'vim-airline/vim-airline'
 -- fuzzing tool(https://github.com/junegunn/fzf.vim)
 Plug('ibhagwan/fzf-lua')
-
+Plug 'mbbill/undotree'
 --ruby 開発環境
 Plug('vim-ruby/vim-ruby', {
   ft='ruby'
@@ -73,6 +73,7 @@ Plug('glacambre/firenvim', {
     vim.fn['firenvim#install'](0)
   end
 })
+Plug 'nvim-tree/nvim-web-devicons'
 -- undotree
 Plug 'mbbill/undotree'
 -- pico 8

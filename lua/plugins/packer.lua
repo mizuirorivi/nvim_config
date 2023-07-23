@@ -1,43 +1,53 @@
 
--- Automatically install packer
-local fn = vim.fn
-local install_path = fn.stdpath('data') .. '/site/pack/packer/start/packer.nvim'
+-- Only required if you have packer in your `opt` pack
+vim.cmd [[packadd packer.nvim]]
 
-if fn.empty(fn.glob(install_path)) > 0 then
-  packer_bootstrap = fn.system({
-    'git',
-    'clone',
-    '--depth',
-    '1',
-    'https://github.com/wbthomason/packer.nvim',
-    install_path
-  })
-  vim.o.runtimepath = vim.fn.stdpath('data') .. '/site/pack/*/start/*,' .. vim.o.runtimepath
-end
--- Autocommand that reloads neovim whenever you save the packer_init.lua file
-vim.cmd [[
-  augroup packer_user_config
-    autocmd!
-    autocmd BufWritePost packer_init.lua source <afile> | PackerSync
-  augroup end
-]]
--- Use a protected call so we don't error out on first use
-local status_ok, packer = pcall(require, 'packer')
-if not status_ok then
-  return
-end
+vim.opt.runtimepath:append('~/.local/share/nvim/site/pack/packer/opt/*')
 
-return require('packer').startup(function()
+return require('packer').startup(function(use)
    -- Dashboard (start screen)
-  use {
-    'goolord/alpha-nvim',
-    requires = { 'kyazdani42/nvim-web-devicons' },
-  }
+  -- use {
+  --   'goolord/alpha-nvim',
+  --   requires = { 'kyazdani42/nvim-web-devicons' },
+  -- }
   use {"akinsho/toggleterm.nvim", tag = '*', config = function()
     require("toggleterm").setup()
   end}
-  -- A line for the vim tab page, not for buffers
+  -- -- A line for the vim tab page, not for buffers
   use 'nanozuki/tabby.nvim'
+  -- use {
+  --   'glepnir/dashboard-nvim',
+  --   event = 'VimEnter',
+  --   config = function()
+  --       require('dashboard').setup {
+  --         -- config
+  --       }
+  --   end,
+  --   requires = {'nvim-tree/nvim-web-devicons'}
+  -- }
+  use {
+      requires = { 'nvim-tree/nvim-web-devicons' },
+      config = function ()
+          require'alpha'.setup(require'alpha.themes.startify'.config)
+      end
+  }
+  use 'nvim-treesitter/nvim-treesitter'
+  use 'eandrju/cellular-automaton.nvim' 
+  use {
+  "rinx/nvim-ripgrep",
+  config = function()
+    require("nvim-ripgrep").setup {
+      prompt = "❯ ",
+      window = {
+        width = 0.8,
+        border = "rounded",
+      },
+      open_qf_fn = function()
+        return vim.api.nvim_command("copen")
+      end, 
+    }
+  end
+  }
   -- Automatically set up your configuration after cloning packer.nvim
   -- Put this at the end after all plugins
   if packer_bootstrap then
