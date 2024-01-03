@@ -40,7 +40,6 @@ local meta = {
 
     opts['for'] = opts.ft
     opts.ft = nil
-
     vim.call('plug#', repo, opts)
 
     -- Add basic support to colocate plugin config

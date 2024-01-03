@@ -1,86 +1,98 @@
-local Plug = require 'usermod.vimplug'
-Plug.begin('~/.config/nvim/plugged/')
--- ファイルツリー表示
-Plug 'scrooloose/nerdtree'
 
-Plug 'unkiwii/vim-nerdtree-sync'
+-- packer setup
+vim.cmd [[packadd packer.nvim]]
 
--- Plug 'beauwilliams/focus.nvim'
--- for maniuplate window
-Plug 'https://gitlab.com/yorickpeterse/nvim-window.git' -- -- Shade is a Neovim plugin that dims your inactive windows
-Plug 'sunjon/shade.nvim'
--- color theme
-Plug('folke/tokyonight.nvim', { 
-  branch='main'
-})
-Plug 'ryanoasis/vim-devicons'
--- air line status bar
-Plug 'vim-airline/vim-airline'
--- fuzzing tool(https://github.com/junegunn/fzf.vim)
-Plug('ibhagwan/fzf-lua')
-Plug 'mbbill/undotree'
---ruby 開発環境
-Plug('vim-ruby/vim-ruby', {
-  ft='ruby'
-})
--- --ruby 開発環境
--- Plug('vim-ruby/vim-ruby', {
---   ft='ruby'
--- })
+require('packer').startup(function(use)
 
---lsp 環境設定
-Plug 'prabirshrestha/vim-lsp'
-Plug 'mattn/vim-lsp-settings'
-Plug 'prabirshrestha/async.vim'
-Plug 'prabirshrestha/asyncomplete.vim'
-Plug 'prabirshrestha/asyncomplete-lsp.vim'
+  -- file explorer
+  use 'scrooloose/nerdtree'
+  use 'unkiwii/vim-nerdtree-sync'
+  use 'echasnovski/mini.base16'
+  -- for manipulate window
+  use 'https://gitlab.com/yorickpeterse/nvim-window.git' -- Shade is a Neovim plugin that dims your inactive windows
+  use 'sunjon/shade.nvim'
 
-Plug 'ajh17/vimcompletesme'
-Plug 'Shougo/ddc.vim'
-Plug 'shun/ddc-vim-lsp'
+  -- color theme
+  use { "ellisonleao/gruvbox.nvim" }
+  use 'ryanoasis/vim-devicons'
 
--- comment機能  `gcc` でコメントアウト `gc` でコメント解除
-Plug 'joom/vim-commentary'
+  -- air line status bar
+  use 'vim-airline/vim-airline'
 
-Plug 'rcarriga/nvim-notify'
+  -- fuzzing tool
+  use 'ibhagwan/fzf-lua'
+  use 'mbbill/undotree'
 
--- lua 環境
-Plug 'thugcee/nvim-map-to-lua'
-Plug 'neovim/nvim-lspconfig'
--- for rust
-Plug 'simrat39/rust-tools.nvim'
--- for vim debug
-Plug 'nvim-lua/plenary.nvim'
--- for bookmarks
-Plug 'MattesGroeger/vim-bookmarks'
---  one-small-step-for-vimkind (for lua debug)
-Plug 'jbyuki/one-small-step-for-vimkind'
+  --ruby 開発環境
+  use {'vim-ruby/vim-ruby', ft = 'ruby'}
 
--- You will also need a comptabile DAP client
+  --lsp 環境設定
+  use 'prabirshrestha/async.vim'
+  use 'prabirshrestha/asyncomplete.vim'
+  use 'prabirshrestha/asyncomplete-lsp.vim'
+  use 'antosha417/nvim-lsp-file-operations'
+  use 'williamboman/nvim-lsp-installer'
+  use 'hrsh7th/cmp-nvim-lsp'
+  use 'hrsh7th/cmp-buffer'
+  use 'hrsh7th/cmp-path'
+  use 'hrsh7th/cmp-cmdline'
+  use 'hrsh7th/nvim-cmp'
+  -- comment機能  `gcc` でコメントアウト `gc` でコメント解除
+  use 'joom/vim-commentary'
+  use 'rcarriga/nvim-notify'
 
-Plug 'mfussenegger/nvim-dap'
--- Intellisense engine
-Plug 'neoclide/coc.nvim'
--- for multi cursole (https://github.com/mg979/vim-visual-multi)
-Plug('mg979/vim-visual-multi', {
-  branch='master'
-})
--- add text object
-Plug 'wellle/targets.vim'
+  -- lua Environment
+  use 'thugcee/nvim-map-to-lua'
+  use 'neovim/nvim-lspconfig'
 
-Plug('glacambre/firenvim', { 
-  run=function(plugin_name)
-    vim.fn['firenvim#install'](0)
-  end
-})
-Plug 'nvim-tree/nvim-web-devicons'
--- undotree
-Plug 'mbbill/undotree'
--- pico 8
-Plug 'bakudankun/pico-8.vim'
+  -- for rust
+  use 'simrat39/rust-tools.nvim'
 
--- terminal
--- Plug('akinsho/toggleterm.nvim',{
---   tag='*'
--- })
-Plug.ends()
+  -- for vim debug
+  use 'nvim-lua/plenary.nvim'
+
+  -- for bookmarks
+  use 'MattesGroeger/vim-bookmarks'
+
+  -- one-small-step-for-vimkind (for lua debug)
+  use 'jbyuki/one-small-step-for-vimkind'
+
+  -- DAP client
+  use 'mfussenegger/nvim-dap'
+
+  -- Intellisense engine
+  use 'neoclide/coc.nvim'
+
+  -- for multi cursor
+  use {'mg979/vim-visual-multi', branch = 'master'}
+
+  -- add text object
+  use 'wellle/targets.vim'
+
+  -- firenvim
+  use {
+    'glacambre/firenvim',
+    run = function() vim.fn['firenvim#install'](0) end
+  }
+
+  use 'nvim-tree/nvim-web-devicons'
+
+  -- pico 8
+  use 'bakudankun/pico-8.vim'
+
+  -- terminal
+  use {'akinsho/toggleterm.nvim', tag = '*'}
+  -- taby
+  use 'nanozuki/tabby.nvim'
+  -- surround
+  use({
+    "kylechui/nvim-surround",
+    tag = "*", -- Use for stability; omit to use `main` branch for the latest features
+    config = function()
+        require("nvim-surround").setup({
+            -- Configuration here, or leave empty to use defaults
+        })
+    end
+  })
+  use 'windwp/nvim-autopairs'
+end)

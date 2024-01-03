@@ -1,9 +1,19 @@
-# install packer
- git clone --depth 1 https://github.com/wbthomason/packer.nvim\
-   ~/.config/nvim/plugin/packer.nvim
+#!/bin/bash
+# setup
+## use packer
+nvim --headless -c ':PackerInstall' -c ':qa'
+# install language server
+## rust
+mkdir ~/.local/bin
+curl -L https://github.com/rust-analyzer/rust-analyzer/releases/latest/download/rust-analyzer-linux -o ~/.local/bin/rust-analyzer
+chmod +x ~/.local/bin/rust-analyzer
+nvim --headless -c ':CocInstall coc-rust-analyzer' -c ':qa'
+## lua 
+git clone --depth 1 https://github.com/sumneko/lua-language-server ~/.local/bin/lua-language-server
+pushd ~/.local/bin/lua-language-server
+git submodule update --init --recursive
+pushd 3rd/luamake
+./compile/install.sh
+popd
+./3rd/luamake/luamake rebuild
 
-git clone https://github.com/github/copilot.vim.git \
- ~/.config/nvim/pack/github/start/copilot.vim
-# install vim-plug
-sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
-       https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'

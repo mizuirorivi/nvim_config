@@ -44,21 +44,20 @@ require('tabby.tabline').set(function(line)
     hl = theme.fill,
   }
 end)
-vim.api.nvim_set_keymap("n", "<leader>ta", ":$tabnew<CR>", { noremap = true })
+_G.duplicate_current_window_in_new_tab = function()
+        local current_buf = vim.api.nvim_get_current_buf()
+        vim.cmd('tabnew')
+        vim.api.nvim_set_current_buf(current_buf)
+end
 vim.api.nvim_set_keymap("n", "ta", ":$tabnew<CR>", { noremap = true })
-vim.api.nvim_set_keymap("n", "<leader>te", ":tabedit ", { noremap = true })
-vim.api.nvim_set_keymap("n", "<leader>tc", ":tabclose<CR>", { noremap = true })
+vim.api.nvim_set_keymap("n", "te", ":tabedit ", { noremap = true })
 vim.api.nvim_set_keymap("n", "tc", ":tabclose<CR>", { noremap = true })
-vim.api.nvim_set_keymap("n", "<leader>to", ":tabonly<CR>", { noremap = true })
-vim.api.nvim_set_keymap("n", "<leader>tn", ":tabn<CR>", { noremap = true })
 vim.api.nvim_set_keymap("n", "tn", ":tabn<CR>", { noremap = true })
-vim.api.nvim_set_keymap("n", "<leader>tp", ":tabp<CR>", { noremap = true })
 vim.api.nvim_set_keymap("n", "tp", ":tabp<CR>", { noremap = true })
 -- move current tab to previous position
-vim.api.nvim_set_keymap("n", "<leader>tmp", ":-tabmove<CR>", { noremap = true })
-vim.api.nvim_set_keymap("n", "<M-x>l", ":-tabmove<CR>", { noremap = true })
--- move current tab to next position
-vim.api.nvim_set_keymap("n", "<leader>tmn", ":+tabmove<CR>", { noremap = true })
-vim.api.nvim_set_keymap("n", "<M-x>h", ":+tabmove<CR>", { noremap = true })
-vim.api.nvim_set_keymap("n", "<leader>tw", "<C-W>T", { noremap = true })
+vim.api.nvim_set_keymap("n", "tmp", ":-tabmove<CR>", { noremap = true })
+vim.api.nvim_set_keymap("n", "tmn", ":+tabmove<CR>", { noremap = true })
+-- move curent window to tab
 vim.api.nvim_set_keymap("n", "tw", "<C-W>T", { noremap = true })
+-- duplicate current window in new tab
+vim.api.nvim_set_keymap("n", "td", ":lua duplicate_current_window_in_new_tab()<CR>", { noremap = true })
