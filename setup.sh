@@ -16,4 +16,5 @@ pushd 3rd/luamake
 ./compile/install.sh
 popd
 ./3rd/luamake/luamake rebuild
+popd
 

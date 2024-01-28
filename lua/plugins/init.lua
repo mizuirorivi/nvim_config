@@ -95,4 +95,5 @@ require('packer').startup(function(use)
     end
   })
   use 'windwp/nvim-autopairs'
+  use({ 'toppair/peek.nvim', run = 'deno task --quiet build:fast' })
 end)
