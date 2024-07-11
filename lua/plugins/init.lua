@@ -153,5 +153,5 @@ require('packer').startup(function(use)
         "folke/trouble.nvim",
         "nvim-telescope/telescope.nvim"
       }
-  })
-  end)
+    })
+end)

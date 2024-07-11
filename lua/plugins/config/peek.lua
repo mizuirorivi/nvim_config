@@ -1,3 +1,10 @@
+local function is_i3wm_installed()
+    local handle = io.popen("i3 --version")
+    local result = handle:read("*a")
+    handle:close()
+    return result:match("i3 version") ~= nil
+end
+
 -- default config:
 require('peek').setup({
   auto_load = true,         -- whether to automatically load preview when
@@ -29,3 +36,19 @@ vim.api.nvim_create_user_command('PeekClose', require('peek').close, {})
 vim.api.nvim_set_keymap('n', 'C-s', ':PeekOpen<CR>', { noremap = true, silent = true })
 -- keymap for peekclose to ctrl + p if PeekOpened
 vim.api.nvim_set_keymap('n', 'C-p', ':PeekClose<CR>', { noremap = true, silent = true })
+if is_i3wm_installed() then
+    vim.api.nvim_create_user_command('PeekOpen', function()
+        if not peek.is_open() and vim.bo[vim.api.nvim_get_current_buf()].filetype == 'markdown' then
+            vim.fn.system('i3-msg split horizontal')
+            peek.open()
+        end
+    end, {})
+  vim.api.nvim_create_user_command('PeekClose', function()
+    if peek.is_open() then
+      peek.close()
+      vim.fn.system('i3-msg move left')
+    end
+  end, {})
+  else
+    print("i3wm is not installed, PeekOpen command will not be available.")
+end
