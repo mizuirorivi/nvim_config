@@ -1,25 +1,51 @@
+
+vim.cmd[[
+  set termguicolors
+  set undolevels=200
+  set ffs=unix
+  set encoding=utf-8
+  set fileencoding=utf-8
+  set listchars=eol:$
+  set list
+  nnoremap <leader>sv :source $MYVIMRC<CR>
+]]
+
 function requirePath(path) 
   local files = io.popen('find "$HOME"/.config/nvim/lua/' .. path .. ' -type f')
 
   for file in files:lines() do
     for req_file in file:gmatch('%/lua%/(.+).lua$') do
       req_file = req_file:gsub('/', '.')
-      status_ok, _ = pcall(require, req_file)
-
+      local status_ok, f = pcall(require, req_file)
       if not status_ok then
-        vim.notify('Failed loading ' .. req_file, vim.log.levels.ERROR)
+        my_notify(f, vim.log.levels.TRACE)
       end
     end
+  end
+end
+function my_notify(message, vlevel)
+  local status, notify = pcall(require, 'notify')
+  if status then
+    notify.setup({
+      minimum_width = 20,
+      background_colour = "#000000",
+      render = "wrapped-compact",
+    })
+    option = {
+      title = "Neovim CONFIG INFORMATION",
+      level = vlevel,
+      timeout = false
+    }
+    notify.Option = option
+    notify.notify(message,"info", option)
+  else
+    vim.notify(message, vim.log.levels.TRACE)
   end
 end
 
 requirePath('user_config')
 requirePath('plugins')
 
-vim.cmd[[
-  set termguicolors
-  set undolevels=200
-]]
 
 require "colorscheme"
 

@@ -17,3 +17,4 @@ pushd 3rd/luamake
 popd
 ./3rd/luamake/luamake rebuild
 
+git clone https://github.com/neovim/nvim-lspconfig ~/.config/nvim/pack/nvim/start/nvim-lspconfig

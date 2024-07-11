@@ -1,6 +1,3 @@
--- vim.cmd[[
---     map <Leader>t :ToggleTerm<CR> ]]
-
 require("toggleterm").setup{
   size = 13,
   open_mapping = [[<Leader>tt]],

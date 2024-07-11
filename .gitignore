@@ -2,3 +2,7 @@ pack/
 plugged/
 .netrwhist
 plugin/packer_compiled.lua
+.git/
+.DS_Store
+.gitignore
+

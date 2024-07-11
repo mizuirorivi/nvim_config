@@ -1,158 +1,21 @@
 {
-	"suggest.completionItemKindLabels": {
-		"keyword":       "\uf1de",
-		"variable":      "\ue79b",
-		"value":         "\uf89f",
-		"operator":      "\u03a8",
-		"function":      "\u0192",
-		"reference":     "\ufa46",
-		"constant":      "\uf8fe",
-		"method":        "\uf09a",
-		"struct":        "\ufb44",
-		"class":         "\uf0e8",
-		"interface":     "\uf417",
-		"text":          "\ue612",
-		"enum":          "\uf435",
-		"enumMember":    "\uf02b",
-		"module":        "\uf40d",
-		"color":         "\ue22b",
-		"property":      "\ue60b",
-		"field":         "\uf9be",
-		"unit":          "\uf475",
-		"event":         "\ufacd",
-		"file":          "\uf723",
-		"folder":        "\uf114",
-		"snippet":       "\ue60b",
-		"typeParameter": "\uf728",
-		"default":       "\uf29c"
-	},
-        "suggest.acceptCompletionKey": "<C-CR>",
-	"languageserver": {
-		"lua": {
-			"filetypes": ["lua"],
-			"rootPatterns": [".git/"],
-			"settings": {
-				"Lua": {
-					"workspace.library": {
-						"/usr/share/nvim/runtime/lua": true,
-						"/usr/share/nvim/runtime/lua/vim": true,
-						"/usr/share/nvim/runtime/lua/vim/lsp": true
-					},
-					"diagnostics": {
-						"enable": true,
-						"globals": ["vim"]
-					}
-				}
-			}
-		},
-		"ccls": {
-			"command":      "ccls",
-			"filetypes":    ["c", "cpp", "objc", "objcpp"],
-			"rootPatterns": [".ccls", "compile_commands.json", ".vim/", ".git/", ".hg/"],
-			"initializationOptions": {
-				"cache": {
-					"directory": "/tmp/ccls"
-				},
-				"highlight": { "lsRanges" : true },
-				"client": {
-					"snippetSupport": true
-				}
-			}
-		},
-		"rust":
-		{
-			"command": "rust-analyzer",
-			"filetypes": ["rust"],
-			"rootPatterns": [".git/", "Cargo.toml"],
-                        "settings": {
-                                "rust-analyzer": {
-                                        "cargo": {
-                                                "loadOutDirsFromCheck": true
-                                        },
-                                        "diagnostics": {
-                                                "disabled": ["unresolved-import"]
-                                        },
-                                        "checkOnSave": {
-                                                "command": "clippy"
-                                        },
-                                        "procMacro": {
-                                                "enable": true
-                                        }
-                                }
-                        }
-		},
-		"dockerfile": {
-			"command":   "docker-langserver",
-			"filetypes": ["dockerfile"],
-			"args":      ["--stdio"]
-		},
-		"bash": {
-			"command":          "bash-language-server",
-			"args":             ["start"],
-			"filetypes":        ["sh", "PKGBUILD"],
-			"ignoredRootPaths": ["~"],
-			"trace.server":     "verbose"
-		},
-		"cmake": {
-			"command":               "cmake-language-server",
-			"filetypes":             ["cmake"],
-			"rootPatterns":          ["build/"],
-			"initializationOptions": {
-				"buildDirectory": "build"
-			},
-			"trace.server":          "verbose"
-		},
-		"svls": {
-			"command": "svls",
-			"filetypes": ["systemverilog", "verilog"]
-		},
-		"csharp-ls": {
-			"command": "csharp-ls",
-			"filetypes": ["cs"],
-			"rootPatterns": [".git/", "*.csproj"],
-			"trace.server": "verbose"
-		},
-		"texlab": {
-			"command": "texlab",
-			"filetypes": ["tex", "bib", "plaintex", "context"]
-		},
-		"sql": {
-			"command": "sql-language-server",
-			"args": ["up", "--method", "stdio"],
-			"filetypes": ["sql"],
-			"settings": {
-				"sqlLanguageServer": {
-					"lint": {
-						"rules": {
-							"linebreak-after-clause-keyword": "off"
-						}
-					}
-				}
-			}
-		},
-		"glsl": {
-			"command": "glsl_analyzer",
-			"filetypes": ["glsl"]
-		}
-	},
-	"html-css-support.styleSheets": [
-		"style.css",
-		"/style.css",
-		"https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
-	],
-	"[typescrtipt]":{
-		"coc.preferences.formatOnSave": true
-	},
-	"coc.preferences.enableMessageDialog":   true,
-	"codeLens.enable":                       true,
-	"codeLens.position":                   "eol",
-	"diagnostic.virtualText":                true,
-	"diagnostic.virtualTextCurrentLineOnly": false,
-	"diagnostic.warningSign":                " ",
-	"git.showCommitInFloating":              true,
-	"json.trace.server":                     "verbose",
-	"signature.target":                      "float",
-	"suggest.enablePreview":                 true,
-	"suggest.maxCompleteItemCount":          1000,
-	"suggest.labelMaxLength":                40
+"languageserver": {
+  "ccls": {
+    "command": "ccls",
+    "args": ["--log-file=/tmp/ccls.log"],
+    "filetypes": ["c", "cc", "cpp", "c++", "objc", "objcpp"],
+    "rootPatterns": [".git/",".ccls", "compile_commands.json", ".hg/"],
+    "initializationOptions": {
+        "cache": {
+          "directory": "/tmp/ccls"
+        },
+        "clang": {
+          "excludeArgs": [],
+          "extraArgs": []
+          
+       }
+      }
+  }
+},
+"snippets.ultisnips.pythonPrompt": false
 }
