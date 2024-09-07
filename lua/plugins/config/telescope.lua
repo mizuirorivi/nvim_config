@@ -5,11 +5,14 @@ wk.setup({
 })
 wk.register({
   f = {
-    name = "find by using Telescope",
+    name = "find Something",
     c = { "<cmd>Telescope commands<cr>", "find command and execute" },
 
     t = {
       "<cmd>Telescope find_template type=insert filter_ft=false<cr>", "Insert Any Template"
+    },
+    u = {
+      "<cmd>UndotreeToggle<cr>","Show  undo history"
     }
   },
 }, { prefix = "<space>" })

@@ -85,3 +85,17 @@ vim.api.nvim_set_keymap("n", "<leader>tmn", ":+tabmove<CR>", { noremap = true })
 vim.api.nvim_set_keymap("n", "<leader>tw", "<C-W>T", { noremap = true })
 -- duplicate current window in new tab
 vim.api.nvim_set_keymap("n", "<leader>td", ":lua duplicate_current_window_in_new_tab()<CR>", { noremap = true })
+
+
+vim.api.nvim_set_keymap("n", "ta", ":$tabnew<CR>", { noremap = true })
+vim.api.nvim_set_keymap("n", "te", ":tabedit ", { noremap = true })
+vim.api.nvim_set_keymap("n", "tc", ":tabclose<CR>", { noremap = true })
+vim.api.nvim_set_keymap("n", "tn", ":tabn<CR>", { noremap = true })
+vim.api.nvim_set_keymap("n", "tp", ":tabp<CR>", { noremap = true })
+-- move current tab to previous position
+vim.api.nvim_set_keymap("n", "tmp", ":-tabmove<CR>", { noremap = true })
+vim.api.nvim_set_keymap("n", "tmn", ":+tabmove<CR>", { noremap = true })
+-- move current window to tab
+vim.api.nvim_set_keymap("n", "tw", "<C-W>T", { noremap = true })
+-- duplicate current window in new tab
+vim.api.nvim_set_keymap("n", "td", ":lua duplicate_current_window_in_new_tab()<CR>", { noremap = true })

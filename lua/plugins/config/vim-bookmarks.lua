@@ -1,17 +1,37 @@
-vim.cmd[[
+local wk = require("which-key")
+require('telescope').load_extension('vim_bookmarks')
+
+
+vim.cmd [[
 highlight BookmarkSign ctermbg=NONE ctermfg=160
 highlight BookmarkLine ctermbg=194 ctermfg=NONE
 let g:bookmark_sign = '♥'
 let g:bookmark_highlight_lines = 1
 
-nmap <Leader>fb <Plug>BookmarkToggle
-nmap <Leader>fbi <Plug>BookmarkAnnotate
-nmap <Leader>fba <Plug>BookmarkShowAll
-nmap <Leader>fbj <Plug>BookmarkNext
-nmap <Leader>fbk <Plug>BookmarkPrev
-nmap <Leader>fbc <Plug>BookmarkClear
-nmap <Leader>fbx <Plug>BookmarkClearAll
-nmap <Leader>fbkk <Plug>BookmarkMoveUp
-nmap <Leader>fbjj <Plug>BookmarkMoveDown
-nmap <Leader>fbg <Plug>BookmarkMoveToLine
+nmap <Leader>mb <Plug>BookmarkToggle
+nmap <Leader>mi <Plug>BookmarkAnnotate
+nmap <Leader>ma <Plug>BookmarkShowAll
+nmap <Leader>mj <Plug>BookmarkNext
+nmap <Leader>mk <Plug>BookmarkPrev
+nmap <Leader>mc <Plug>BookmarkClear
+nmap <Leader>mx <Plug>BookmarkClearAll
+nmap <Leader>mg <Plug>BookmarkMoveToLine
 ]]
+wk.setup({
+  triggers = { "<space>" }
+})
+wk.register({
+  m = {
+    name = "bookmark",
+    a = { "<cmd>Telescope vim_bookmarks all<cr>", "Show all bookmarks" },
+    b = { "<Plug>BookmarkToggle", "Bookmark create" },
+    i = { "<Plug>BookmarkAnnotate", "Bookmark annotate" },
+    j = { "<Plug>BookmarkNext", "Bookmark next" },
+    k = { "<Plug>BookmarkPrev", "Bookmark prev" },
+    f = { "<cmd>Telescope vim_bookmarks current_file<cr>", "Show bookmarks in current [f]ile" },
+    c = { "<Plug>BookmarkClear", "Bookmark clear" },
+    x = { "<Plug>BookmarkClearAll", "Bookmark clear all" },
+    g = { "<Plug>BookmarkMoveToLine", "Bookmark move to line"
+    }
+  }
+})
