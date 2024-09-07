@@ -28,9 +28,9 @@ require("lazy").setup({
     cmd = { 'Template', 'TemProject' },
     config = function()
       require('template').setup({
-        temp_dir = '~/.config/nvim/templates', -- template directory
-        author = 'mizuiro_rivi',         -- your name
-        email = 'onodaha@gmail.com'     -- email address
+        temp_dir = "~/.config/nvim/templates", -- template directory
+        author = "mizuiro_rivi",               -- your name
+        email = "onodaha@gmail.com"            -- email address
       })
     end
   },
@@ -47,6 +47,9 @@ require("lazy").setup({
   -- sqlite is only needed if you want to use frecency sorting
   dependencies = { 'kkharji/sqlite.lua' },
 
+
+  -- undo tree
+  'mbbill/undotree',
   -- file explorer
 
   'mizuirorivi/EnhancedNERDTree',
@@ -76,7 +79,10 @@ require("lazy").setup({
   {
     'nvim-telescope/telescope.nvim',
     tag = '0.1.6',
-    dependencies = { { 'nvim-lua/plenary.nvim' } }
+    dependencies = { {
+      'nvim-lua/plenary.nvim',
+      "debugloop/telescope-undo.nvim",
+    } }
   },
   {
     'nvim-telescope/telescope-fzf-native.nvim',
@@ -142,6 +148,7 @@ require("lazy").setup({
 
   -- for bookmarks
   'MattesGroeger/vim-bookmarks',
+  'tom-anders/telescope-vim-bookmarks.nvim',
 
   -- one-small-step-for-vimkind (for lua debug)
   'jbyuki/one-small-step-for-vimkind',
@@ -300,3 +307,4 @@ require("lazy").setup({
     end,
   },
 })
+

@@ -1,13 +1,13 @@
 #
 #  Copyright {{_lua:os.date("%y/%m/%d")_}} {{_author_}}. All rights reserved
 #
-CC = gcc
+CC = g++
 CFLAGS = -Wall -Wextra -O2
 LDFLAGS = 
 
 # プロジェクトの名前とソースファイルのリスト
 TARGET = myapp
-SRCS = main.c utils.c
+SRCS = main.cpp 
 OBJS = $(SRCS:.c=.o)
 
 # デフォルトのターゲット (通常は all)
@@ -33,4 +33,7 @@ install: $(TARGET)
 test: $(TARGET)
 	# テスト用のコマンドを書く
 	# 例: ./$(TARGET) --test
+
+# .PHONYターゲットの指定 (ファイル名と被らないように)
+.PHONY: all clean install test
 
