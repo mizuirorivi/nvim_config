@@ -1,5 +1,7 @@
 -- vim.o.background = "light" -- or "light" for light mode
 -- Default options:
+-- require("colorscheme.favorite")
+-- vim.cmd("colorscheme favorite")
 require("gruvbox").setup({
   terminal_colors = true, -- add neovim terminal colors
   undercurl = true,
@@ -18,16 +20,16 @@ require("gruvbox").setup({
   invert_tabline = false,
   invert_intend_guides = false,
   inverse = true, -- invert background for search, diffs, statuslines and errors
-  contrast = "", -- can be "hard", "soft" or empty string
+  contrast = "",  -- can be "hard", "soft" or empty string
   palette_overrides = {},
   overrides = {
-    SignColumn = {bg = "#d6deeb"}
+    SignColumn = { bg = "#d6deeb" }
   },
   dim_inactive = false,
   transparent_mode = false,
 })
 require("themery").setup({
-  themes = {{
+  themes = { {
     name = "Gruvbox dark",
     colorscheme = "gruvbox",
     before = [[
@@ -35,12 +37,18 @@ require("themery").setup({
       vim.opt.background = "dark"
     ]],
   },
-  {
-    name = "Gruvbox light",
-    colorscheme = "gruvbox",
-    before = [[
+    {
+      name = "Gruvbox light",
+      colorscheme = "gruvbox",
+      before = [[
       vim.opt.background = "light"
     ]],
-    after = [[-- Same as before, but after if you need it]]
-  }},
+      after = [[-- Same as before, but after if you need it]]
+    },
+    {
+      name = "My favorite Theme",
+      colorscheme = "favorite",
+    },
+  },
+  live_preview = true,
 })

@@ -46,9 +46,10 @@ end
 requirePath('config')
 requirePath('user_config')
 requirePath('plugins')
+requirePath('colorscheme')
 require('usermod.command_search')
 require('usermod.relative_number')
-
+require('usermod.tab_switcher')
 require "colorscheme"
 
 vim.cmd[[
