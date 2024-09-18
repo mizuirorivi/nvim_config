@@ -1,3 +1,4 @@
+local peek = require('peek')
 local function is_i3wm_installed()
     local handle = io.popen("i3 --version")
     local result = handle:read("*a")
@@ -29,12 +30,23 @@ local M = {
                             -- that has to pass before starting new render
 }
 
+local wk = require("which-key")
+wk.setup({
+  triggers = { "<space>" }
+})
+wk.register({
+  p = {
+    name = "markdown preview",
+    o = {
+      "<cmd>PeekOpen<cr>", "Open Peek"
+    },
 
+    c = {
+      "<cmd>PeekClose<cr>", "Close Peek"
+    },
+  },
+}, { prefix = "<space>" })
 
--- keymap for peekopen to ctrl + p
-vim.api.nvim_set_keymap('n', 'C-s', ':PeekOpen<CR>', { noremap = true, silent = true })
--- keymap for peekclose to ctrl + p if PeekOpened
-vim.api.nvim_set_keymap('n', 'C-p', ':PeekClose<CR>', { noremap = true, silent = true })
 if is_i3wm_installed() then
     vim.api.nvim_create_user_command('PeekOpen', function()
         if not peek.is_open() and vim.bo[vim.api.nvim_get_current_buf()].filetype == 'markdown' then

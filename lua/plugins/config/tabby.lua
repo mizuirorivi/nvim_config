@@ -70,6 +70,7 @@ wk.register({
     },
     w = { "<C-W>T", "Move Current Window to New Tab" },
     d = { ":lua duplicate_current_window_in_new_tab()<CR>", "Duplicate Current Window in New Tab" },
+    l = { ":lua require('usermod.tab_switcher').switch_tab()<CR>", "Switch Tab"}
   }
 }, { prefix = "<space>" })
 
@@ -92,6 +93,7 @@ vim.api.nvim_set_keymap("n", "te", ":tabedit ", { noremap = true })
 vim.api.nvim_set_keymap("n", "tc", ":tabclose<CR>", { noremap = true })
 vim.api.nvim_set_keymap("n", "tn", ":tabn<CR>", { noremap = true })
 vim.api.nvim_set_keymap("n", "tp", ":tabp<CR>", { noremap = true })
+vim.api.nvim_set_keymap("n", "tl", ':lua require("usermod.tab_switcher").switch_tab()<CR>', { noremap = true })
 -- move current tab to previous position
 vim.api.nvim_set_keymap("n", "tmp", ":-tabmove<CR>", { noremap = true })
 vim.api.nvim_set_keymap("n", "tmn", ":+tabmove<CR>", { noremap = true })
