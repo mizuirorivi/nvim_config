@@ -2,7 +2,7 @@
 local lspconfig = require('lspconfig')
 
 -- 汎用的な on_attach 関数をインポート
-local on_attach = require('plugins/config/language/onattach').on_attach
+local on_attach = require('plugins/language/onattach').on_attach
 
 -- Define settings for Lua language server
 local lua_ls_settings = {

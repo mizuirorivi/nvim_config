@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Name=My Application
+Comment=Description of my application
+Exec=/path/to/executable
+Icon=/path/to/icon.png
+Categories=Utility;
