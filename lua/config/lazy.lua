@@ -64,6 +64,10 @@ require("lazy").setup({
   { 'ellisonleao/gruvbox.nvim' },
   -- color theme switcher
   { 'zaldih/themery.nvim' },
+  -- visualize color code
+  'norcalli/nvim-colorizer.lua',
+  -- color picker
+  'nvim-colortils/colortils.nvim',
   'ryanoasis/vim-devicons',
   { 'echasnovski/mini.icons', version = false },
 
@@ -135,6 +139,14 @@ require("lazy").setup({
       'L3MON4D3/LuaSnip',
     },
   },
+  -- -- automatically install language server
+  -- {
+  --   "dundalek/lazy-lsp.nvim",
+  --   dependencies = { "neovim/nvim-lspconfig" },
+  --   config = function()
+  --     require("lazy-lsp").setup {}
+  --   end
+  -- },
 
   -- comment機能  `gcc` でコメントアウト `gc` でコメント解除
   'joom/vim-commentary',
@@ -162,8 +174,7 @@ require("lazy").setup({
   -- add text object
   'wellle/targets.vim',
 
-  'nvim-tree/nvim-web-devicons',
-
+  'kyazdani42/nvim-web-devicons',
   -- pico 8
   'bakudankun/pico-8.vim',
 
@@ -228,9 +239,6 @@ require("lazy").setup({
       "williamboman/mason.nvim",
       "nvimtools/none-ls.nvim",
     },
-    config = function()
-      require("plugins.config.null-ls") -- require your null-ls config here (example below)
-    end,
   },
   -- ruby 開発環境
   { 'vim-ruby/vim-ruby',       ft = 'ruby' },

@@ -58,6 +58,6 @@ local meta = {
     end
   end
 }
-
 -- Meta-tables are awesome
 return setmetatable(Plug, meta)
+

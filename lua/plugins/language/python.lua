@@ -1,7 +1,7 @@
 local lspconfig = require('lspconfig')
 
 -- 汎用的な on_attach 関数をインポート
-local on_attach = require('plugins/config/language/onattach').on_attach
+local on_attach = require('plugins/language/onattach').on_attach
 
 -- Define settings for python
 local pyright_settings = {
@@ -14,6 +14,11 @@ local pyright_settings = {
         },
     },
 }
+local null_ls = require("null-ls")
+-- Register black as a formatter
+null_ls.register(null_ls.builtins.formatting.black.with({
+    extra_args = { "--fast" },
+}))
 -- Setup Lua language server with these settings and on_attach
 lspconfig.pyright.setup({
 
