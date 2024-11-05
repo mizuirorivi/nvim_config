@@ -8,6 +8,7 @@ set clipboard=unnamed,unnamedplus
 set hls                
 inoremap <silent> jj <ESC>
 set list    
+" show tab as "  "
 set listchars=tab:\ \ ,eol:$
 tnoremap <Esc> <C-\><C-n>  
 noremap  <A-k> <C-w>W 
@@ -24,7 +25,7 @@ inoremap <A-/> <Esc><C-o>/
 tnoremap <A-/> <C-\><C-n>/
 set ignorecase smartcase
 ]]
-
+vim.api.nvim_set_keymap('n', '<C-s>', ':saveas ', { noremap = true })
 local function map(mode, lhs, rhs, opts)
   local options = {noremap = true}
   if opts then options = vim.tbl_extend('force', options, opts) end

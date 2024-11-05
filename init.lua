@@ -18,6 +18,7 @@ requirePath('plugins/language')
 require('usermod.command_search')
 require('usermod.relative_number')
 require('usermod.tab_switcher')
+require('usermod.lsp_diagnostics')
 require "colorscheme"
 
 vim.cmd[[

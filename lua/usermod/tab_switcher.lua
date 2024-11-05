@@ -16,12 +16,11 @@ function M.switch_tab()
     table.insert(tab_list, { tabnr = tabnr, label = display_name })
   end
   require('fzf-lua').fzf_exec(
-    vim.tbl_map(function(item) return item.label end, tab_list), -- タブ名のリストを渡す
+    vim.tbl_map(function(item) return item.label end, tab_list), 
     {
       prompt = 'Select Tab> ',
       actions = {
         ['default'] = function(selected)
-          -- 選択したタブに移動
           for _, item in ipairs(tab_list) do
             if item.label == selected[1] then
               vim.cmd('tabn ' .. item.tabnr)
