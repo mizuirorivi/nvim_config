@@ -70,7 +70,12 @@ wk.register({
     },
     w = { "<C-W>T", "Move Current Window to New Tab" },
     d = { ":lua duplicate_current_window_in_new_tab()<CR>", "Duplicate Current Window in New Tab" },
-    l = { ":lua require('usermod.tab_switcher').switch_tab()<CR>", "Switch Tab"}
+    l = {
+      function()
+        require('usermod.tab_switcher').switch_tab()
+      end,
+      "Switch Tab"
+    }
   }
 }, { prefix = "<space>" })
 

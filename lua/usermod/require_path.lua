@@ -1,5 +1,7 @@
 local M = {}
-local mynotify = require("usermod.mynotify").my_notify
+local mynotify = require("usermod.mynotify").new({
+	level=vim.log.levels.TRACE
+})
 function M.requirePath(path) 
   local files = io.popen('find "$HOME"/.config/nvim/lua/' .. path .. ' -type f')
 
@@ -8,7 +10,7 @@ function M.requirePath(path)
       req_file = req_file:gsub('/', '.')
       local status_ok, f = pcall(require, req_file)
       if not status_ok then
-        mynotify(f, vim.log.levels.TRACE)
+        mynotify:my_notify("Error loading " .. req_file .. " " .. f)
       end
     end
   end

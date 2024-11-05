@@ -8,6 +8,7 @@ wk.setup({
 })
 
 require('telescope').load_extension('vim_bookmarks')
+require("telescope").load_extension("notify")
 
 wk.register({
   f = {
@@ -15,7 +16,13 @@ wk.register({
     f = { "<cmd>Telescope find_files<cr>", "Find Files" },
     r = { "<cmd>Telescope oldfiles<cr>", "Recent Files" },
     b = { "<cmd>Telescope buffers<cr>", "Buffers" },
-    n = { "<cmd> Telescope notify<cr>","Show Notifications"},
+    n = { "<cmd>lua require('usermod.mynotify').show_saved_notifications()<cr>","Show Notifications"},
+    N = {
+      function()
+        require("telescope").extensions.notify.notify()
+      end,
+      'show notifications by using telescope'
+    },
     ma = { "<cmd>Telescope vim_bookmarks all<cr>","Show all bookmarks"},
     mc = { "<cmd>Telescope vim_bookmarks current_file<cr>","Show bookmarks in current file"},
   },
