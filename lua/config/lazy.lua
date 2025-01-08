@@ -201,11 +201,8 @@ require("lazy").setup({
   -- terminal
   { 'akinsho/toggleterm.nvim', version = "*", config = true },
 
-  -- taby
-  {
-    'nanozuki/tabby.nvim',
-    dependecies = 'nvim-tree/nvim-web-devicons',
-  },
+  -- tab 
+  { "tiagovla/scope.nvim" },
 
   -- surround
   {
@@ -285,11 +282,11 @@ require("lazy").setup({
     end,
   },
 
-  {
-    "github/copilot.vim",
-    event = "InsertEnter",
-    cmd = "Copilot",
-  },
+  -- {
+  --   "github/copilot.vim",
+  --   event = "InsertEnter",
+  --   cmd = "Copilot",
+  -- },
   "Exafunction/codeium.vim",
   {
     "jackMort/ChatGPT.nvim",
@@ -375,7 +372,6 @@ require("lazy").setup({
       "MunifTanjim/nui.nvim",
       --- The below dependencies are optional,
       "nvim-tree/nvim-web-devicons", -- or echasnovski/mini.icons
-      "zbirenbaum/copilot.lua",    -- for providers='copilot'
       {
         -- support for image pasting
         "HakonHarnes/img-clip.nvim",
