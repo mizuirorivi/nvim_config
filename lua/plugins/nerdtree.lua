@@ -11,7 +11,8 @@ function SetNERDTreeRootToNearestGit()
     vim.g.isopenednerdtree = 0
     return
   end
-  local git_root = require("usermod.rootor.rooter"):new():FindClosedRoot()
+  local git_root = require("usermod.rooter.rooter"):new()
+  git_root = git_root:FindClosedRoot()
 
   if git_root == '' or git_root == nil then
     nerdlog:onlysave('No git root found')
