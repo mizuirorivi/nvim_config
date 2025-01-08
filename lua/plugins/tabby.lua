@@ -1,66 +1,33 @@
 
-local theme = {
-  fill = 'TabLineFill',
-  head = 'TabLine',
-  current_tab = 'TabLineSel',
-  tab = 'TabLine',
-  win = 'TabLine',
-  tail = 'TabLine',
-}
-
-require('tabby.tabline').set(function(line)
-  return {
-    {
-      { '  ', hl = theme.head },
-      line.sep('', theme.head, theme.fill),
-    },
-    line.tabs().foreach(function(tab)
-      local hl = tab.is_current() and theme.current_tab or theme.tab
-      return {
-        line.sep('', hl, theme.fill),
-        tab.is_current() and '' or '',
-        tab.number(),
-        tab.name(),
-        tab.close_btn(''),
-        line.sep('', hl, theme.fill),
-        hl = hl,
-        margin = ' ',
-      }
-    end),
-    line.spacer(),
-    line.wins_in_tab(line.api.get_current_tab()).foreach(function(win)
-      return {
-        line.sep('', theme.win, theme.fill),
-        win.is_current() and '' or '',
-        win.buf_name(),
-        line.sep('', theme.win, theme.fill),
-        hl = theme.win,
-        margin = ' ',
-      }
-    end),
-    {
-      line.sep('', theme.tail, theme.fill),
-      { '  ', hl = theme.tail },
-    },
-    hl = theme.fill,
-  }
-end)
-
+local tabbylog = require("usermod.mynotify").new("tabbylog", vim.log.levels.INFO)
 _G.duplicate_current_window_in_new_tab = function()
   local current_buf = vim.api.nvim_get_current_buf()
   vim.cmd('tabnew')
   vim.api.nvim_set_current_buf(current_buf)
 end
-
 local wk = require("which-key")
+
+function _G.tabcreate()
+  vim.cmd('tabnew')
+  -- vim.g.pwd is from nerdtree.lua in plugins/nertree.lua.
+  -- why bother changing current directory by vim.g.pwd from nertree.lua, because tabby change current directory to wrong one when new tab is opend
+  if vim.g.pwd == nil then
+    tabbylog:onlysave('vim.g.pwd is nil and cwd is ' .. vim.fn.getcwd())
+    vim.g.pwd = vim.fn.getcwd()
+  else 
+    tabbylog:onlysave('vim.g.pwd is ' .. vim.g.pwd)
+  end
+  
+  vim.api.nvim_set_current_dir(vim.g.pwd)
+end
 
 -- Register key mappings with which-key
 wk.register({
   t = {
     name = "Tabs/Windows",
-    a = { ":$tabnew<CR>", "New Tab" },
+    a = { ":lua _G.tabcreate()<CR>", "New Tab" },
     e = { ":tabedit ", "Edit Tab" },
-    c = { ":tabclose<CR>", "Close Tab" },
+    c = { ":tabclose<Cju>", "Close Tab" },
     n = { ":tabn<CR>", "Next Tab" },
     p = { ":tabp<CR>", "Previous Tab" },
     m = {
@@ -79,7 +46,7 @@ wk.register({
   }
 }, { prefix = "<space>" })
 
-vim.api.nvim_set_keymap("n", "<leader>ta", ":$tabnew<CR>", { noremap = true })
+vim.api.nvim_set_keymap("n", "<leader>ta", ":lua _G.tabcreate()<CR>", { noremap = true })
 vim.api.nvim_set_keymap("n", "<leader>te", ":tabedit ", { noremap = true })
 vim.api.nvim_set_keymap("n", "<leader>tc", ":tabclose<CR>", { noremap = true })
 vim.api.nvim_set_keymap("n", "<leader>tn", ":tabn<CR>", { noremap = true })
@@ -93,7 +60,7 @@ vim.api.nvim_set_keymap("n", "<leader>tw", "<C-W>T", { noremap = true })
 vim.api.nvim_set_keymap("n", "<leader>td", ":lua duplicate_current_window_in_new_tab()<CR>", { noremap = true })
 
 
-vim.api.nvim_set_keymap("n", "ta", ":$tabnew<CR>", { noremap = true })
+vim.api.nvim_set_keymap("n", "ta", ":lua _G.tabcreate()<CR>", { noremap = true })
 vim.api.nvim_set_keymap("n", "te", ":tabedit ", { noremap = true })
 vim.api.nvim_set_keymap("n", "tc", ":tabclose<CR>", { noremap = true })
 vim.api.nvim_set_keymap("n", "tn", ":tabn<CR>", { noremap = true })

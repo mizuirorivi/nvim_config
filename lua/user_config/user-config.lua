@@ -1,4 +1,5 @@
 vim.cmd[[
+set noautochdir
 set number             
 set autoindent         
 set shiftwidth=2       
