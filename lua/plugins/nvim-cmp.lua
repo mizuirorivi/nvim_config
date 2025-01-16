@@ -1,9 +1,9 @@
-local cmp = require'cmp'
+local cmp = require 'cmp'
 
 cmp.setup({
   snippet = {
     expand = function(args)
-      require('luasnip').lsp_expand(args.body) -- Luasnipを使用してスニペットを展開
+      require('luasnip').lsp_expand(args.body) 
     end,
   },
   mapping = {
@@ -13,13 +13,13 @@ cmp.setup({
     ['<C-k>'] = cmp.mapping.scroll_docs(4),
     ['<C-Space>'] = cmp.mapping.complete(),
     ['<C-e>'] = cmp.mapping.abort(),
-    ['<CR>'] = cmp.mapping.confirm({ select = true }), -- 選択されたエントリを確認
+    ['<CR>'] = cmp.mapping.confirm({ select = true }), 
   },
   sources = cmp.config.sources({
-    { name = 'nvim_lsp' },  -- ここでnvim_lspソースを追加
-    { name = 'luasnip' },   -- Luasnip用のソース
+    { name = 'nvim_lsp' }, 
+    { name = 'luasnip' },  
   }, {
-    { name = 'buffer' },    -- バッファの内容を補完
+    { name = 'buffer' },  
   })
 })
 
@@ -33,4 +33,4 @@ wk.register({
   ["<C-Space>"] = "Trigger completion",
   ["<C-e>"] = "Abort completion",
   ["<CR>"] = "Confirm completion",
-}, { mode = "i", prefix = "" }) 
+}, { mode = "i", prefix = "" })
