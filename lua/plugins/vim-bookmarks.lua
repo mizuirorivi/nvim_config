@@ -16,6 +16,9 @@ nmap <Leader>mk <Plug>BookmarkPrev
 nmap <Leader>mc <Plug>BookmarkClear
 nmap <Leader>mx <Plug>BookmarkClearAll
 nmap <Leader>mg <Plug>BookmarkMoveToLine
+
+let g:bookmark_save_per_working_dir = 1
+let g:bookmark_auto_save = 1
 ]]
 wk.setup({
   triggers = { "<space>" }

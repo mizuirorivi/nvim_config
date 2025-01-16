@@ -22,7 +22,6 @@ vim.g.mapleader = " "
 vim.g.maplocalleader = "\\"
 
 -- Setup lazy.nvim
-require("lazy").setup({
   {
     "goolord/alpha-nvim",
     -- dependencies = { 'echasnovski/mini.icons' },
@@ -71,7 +70,10 @@ require("lazy").setup({
   'mbbill/undotree',
   -- file explorer
 
-  'mizuirorivi/EnhancedNERDTree',
+  -- 'mizuirorivi/EnhancedNERDTree',
+
+  'nvim-tree/nvim-tree.lua',
+
   'unkiwii/vim-nerdtree-sync',
   'echasnovski/mini.base16',
 
@@ -201,7 +203,7 @@ require("lazy").setup({
   -- terminal
   { 'akinsho/toggleterm.nvim', version = "*", config = true },
 
-  -- tab 
+  -- tab
   { "tiagovla/scope.nvim" },
 
   -- surround
@@ -258,7 +260,7 @@ require("lazy").setup({
     },
   },
   -- ruby 開発環境
-  { 'vim-ruby/vim-ruby',       ft = 'ruby' },
+  { 'vim-ruby/vim-ruby',    ft = 'ruby' },
 
   -- lua environment
   'thugcee/nvim-map-to-lua',
@@ -397,6 +399,26 @@ require("lazy").setup({
         },
         ft = { "markdown", "Avante" },
       },
+      {
+        "kdheepak/lazygit.nvim",
+        lazy = true,
+        cmd = {
+          "LazyGit",
+          "LazyGitConfig",
+          "LazyGitCurrentFile",
+          "LazyGitFilter",
+          "LazyGitFilterCurrentFile",
+        },
+        -- optional for floating window border decoration
+        dependencies = {
+          "nvim-lua/plenary.nvim",
+        },
+        -- setting the keybinding for LazyGit with 'keys' is recommended in
+        -- order to load the plugin when the command is run for the first time
+        keys = {
+          { "<leader>lg", "<cmd>LazyGit<cr>", desc = "LazyGit" }
+        }
+      }
     },
   }
 })
