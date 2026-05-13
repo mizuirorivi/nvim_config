@@ -1,5 +1,6 @@
 require('template').setup({
-  temp_dir = "~/.config/nvim/templates",       -- template directory
+  temp_dir = vim.fn.expand("~/.config/nvim/templates"),       -- template directory
+  project_temp_dir = vim.fn.expand("~/.config/nvim/templates"), -- project template directory
   author = "mizuiro_rivi",                     -- your name
   email = "onodaha@gmail.com",                 -- email address
 })

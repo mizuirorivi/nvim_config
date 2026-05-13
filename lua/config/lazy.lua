@@ -14,7 +14,6 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
   end
 end
 vim.opt.rtp:prepend(lazypath)
-
 -- Make sure to setup `mapleader` and `maplocalleader` before
 -- loading lazy.nvim so that mappings are correct.
 -- This is also a good place to setup other settings (vim.opt)
@@ -22,7 +21,7 @@ vim.g.mapleader = " "
 vim.g.maplocalleader = "\\"
 
 require("lazy").setup({
--- Setup lazy.nvim
+  -- Setup lazy.nvim
   {
     "goolord/alpha-nvim",
     -- dependencies = { 'echasnovski/mini.icons' },
@@ -40,16 +39,16 @@ require("lazy").setup({
   {
     "mizuirorivi/template.nvim",
     cmd = { 'Template', 'TemProject' },
-    dependecies = { 'airblade/vim-rooter' }
+    dependencies = { 'airblade/vim-rooter' }
   },
   {
     'notjedi/nvim-rooter.lua',
     config = function()
       require('nvim-rooter').setup {
-        rooter_patterns = { '.git', '.hg', '.svn' },
+        rooter_patterns = { '.git', '.hg', '.svn', 'Makefile', 'package.json', 'Cargo.toml' },
         trigger_patterns = { '*' },
         manual = false,
-        fallback_to_parent = false,
+        fallback_to_parent = true,
       }
     end
   },
@@ -73,6 +72,16 @@ require("lazy").setup({
 
   -- 'mizuirorivi/EnhancedNERDTree',
 
+  {
+    "nvim-treesitter/nvim-treesitter",
+    build = ":TSUpdate",
+    config = function()
+      require("nvim-treesitter.configs").setup {
+        ensure_installed = "all",
+        highlight = { enable = true },
+      }
+    end
+  },
   'nvim-tree/nvim-tree.lua',
 
   'unkiwii/vim-nerdtree-sync',
@@ -275,6 +284,7 @@ require("lazy").setup({
   -- 'maxmellon/vim-jsx-pretty',
 
   -- for markdown
+  'ixru/nvim-markdown',
   {
     'toppair/peek.nvim',
     build = 'deno task --quiet build:fast',
@@ -285,18 +295,20 @@ require("lazy").setup({
     end,
   },
 
-  -- {
-  --   "github/copilot.vim",
-  --   event = "InsertEnter",
-  --   cmd = "Copilot",
-  -- },
-  "Exafunction/codeium.vim",
+
+  -- for completion AI
+  {
+    "github/copilot.vim",
+    event = "InsertEnter",
+    cmd = "Copilot",
+  },
+  -- "Exafunction/codeium.vim",
   {
     "jackMort/ChatGPT.nvim",
     config = function()
       require("chatgpt").setup({
         openai_params = {
-          model = "gpt-4-1106-preview",
+          model = "gpt-4o-1106-preview",
           frequency_penalty = 0,
           presence_penalty = 0,
           max_tokens = 4095,
@@ -343,10 +355,6 @@ require("lazy").setup({
       "nvim-telescope/telescope.nvim",
       "nvim-lua/plenary.nvim", -- required by telescope
       "MunifTanjim/nui.nvim",
-
-      -- optional
-      -- buggy!!!
-      -- "nvim-treesitter/nvim-treesitter",
       "rcarriga/nvim-notify",
       "nvim-tree/nvim-web-devicons",
     },
@@ -357,24 +365,58 @@ require("lazy").setup({
       }
     },
   },
+
+  {
+    "kdheepak/lazygit.nvim",
+    lazy = true,
+    cmd = {
+      "LazyGit",
+      "LazyGitConfig",
+      "LazyGitCurrentFile",
+      "LazyGitFilter",
+      "LazyGitFilterCurrentFile",
+    },
+    -- optional for floating window border decoration
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+    },
+    -- setting the keybinding for LazyGit with 'keys' is recommended in
+    -- order to load the plugin when the command is run for the first time
+    keys = {
+      { "<leader>lg", "<cmd>LazyGit<cr>", desc = "LazyGit" }
+    }
+  },
   {
     "yetone/avante.nvim",
     event = "VeryLazy",
     lazy = false,
-    version = false, -- set this if you want to always pull the latest change
+    version = false,   -- Set this to "*" to always pull the latest release version, or set it to false to update to the latest code changes.
     opts = {
       -- add any opts here
+      -- for example
+      provider = "openai",
+      openai = {
+        endpoint = "https://api.openai.com/v1",
+        model = "gpt-4o",   -- your desired model (or use gpt-4o, etc.)
+        timeout = 30000,    -- timeout in milliseconds
+        temperature = 0,    -- adjust if needed
+        max_tokens = 4096,
+      },
     },
     -- if you want to build from source then do `make BUILD_FROM_SOURCE=true`
     build = "make",
     -- build = "powershell -ExecutionPolicy Bypass -File Build.ps1 -BuildFromSource false" -- for windows
     dependencies = {
-      "nvim-treesitter/nvim-treesitter",
       "stevearc/dressing.nvim",
       "nvim-lua/plenary.nvim",
       "MunifTanjim/nui.nvim",
       --- The below dependencies are optional,
-      "nvim-tree/nvim-web-devicons", -- or echasnovski/mini.icons
+      "echasnovski/mini.pick",           -- for file_selector provider mini.pick
+      "nvim-telescope/telescope.nvim",   -- for file_selector provider telescope
+      "hrsh7th/nvim-cmp",                -- autocompletion for avante commands and mentions
+      "ibhagwan/fzf-lua",                -- for file_selector provider fzf
+      "nvim-tree/nvim-web-devicons",     -- or echasnovski/mini.icons
+      "zbirenbaum/copilot.lua",          -- for providers='copilot'
       {
         -- support for image pasting
         "HakonHarnes/img-clip.nvim",
@@ -401,24 +443,17 @@ require("lazy").setup({
         ft = { "markdown", "Avante" },
       },
       {
-        "kdheepak/lazygit.nvim",
-        lazy = true,
-        cmd = {
-          "LazyGit",
-          "LazyGitConfig",
-          "LazyGitCurrentFile",
-          "LazyGitFilter",
-          "LazyGitFilterCurrentFile",
-        },
-        -- optional for floating window border decoration
-        dependencies = {
-          "nvim-lua/plenary.nvim",
-        },
-        -- setting the keybinding for LazyGit with 'keys' is recommended in
-        -- order to load the plugin when the command is run for the first time
+        "folke/flash.nvim",
+        event = "VeryLazy",
+        ---@type Flash.Config
+        opts = {},
         keys = {
-          { "<leader>lg", "<cmd>LazyGit<cr>", desc = "LazyGit" }
-        }
+          { "s",     mode = { "n", "x", "o" }, function() require("flash").jump() end,              desc = "Flash" },
+          { "S",     mode = { "n", "x", "o" }, function() require("flash").treesitter() end,        desc = "Flash Treesitter" },
+          { "r",     mode = "o",               function() require("flash").remote() end,            desc = "Remote Flash" },
+          { "R",     mode = { "o", "x" },      function() require("flash").treesitter_search() end, desc = "Treesitter Search" },
+          { "<c-s>", mode = { "c" },           function() require("flash").toggle() end,            desc = "Toggle Flash Search" },
+        },
       }
     },
   }
