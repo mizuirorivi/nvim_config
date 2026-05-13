@@ -13,3 +13,4 @@ local default_notify = NotifyManager
 --   default_notify:onlysave(msg)
 --   vim.api.notify_once(msg, level, opts)
 -- end
+--

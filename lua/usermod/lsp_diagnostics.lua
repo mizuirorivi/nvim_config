@@ -22,7 +22,6 @@ M.diagnostics = function(opts)
   opts = opts or {}
     builtin.diagnostics({
     bufnr = 0,
-    severity = vim.diagnostic.severity.ERROR,
     attach_mappings = function(_,map)
       map('i', '<C-c>', copy_title)
       map('n', '<C-c>', copy_title)
@@ -33,7 +32,6 @@ end
 M.global_diagnostics = function(opts)
   opts = opts or {}
   builtin.diagnostics({
-    severity = vim.diagnostic.severity.ERROR,
     attach_mappings = function(_,map)
       map('i', '<C-c>', copy_title)
       map('n', '<C-c>', copy_title)

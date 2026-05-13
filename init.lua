@@ -9,6 +9,11 @@ vim.cmd[[
   set list
   nnoremap <leader>sv :source $MYVIMRC<CR>
 ]]
+vim.api.nvim_create_autocmd("VimEnter", {
+  callback = function()
+    vim.fn.chdir(vim.fn.getcwd()) -- シェルのCWDを明示的に設定
+  end,
+})
 local requirePath = require("usermod.require_path").requirePath
 requirePath('config')
 requirePath('user_config')
@@ -26,4 +31,5 @@ vim.cmd[[
   map <CS-c> "+y
   map <CS-v> "+p
 ]]
+
 

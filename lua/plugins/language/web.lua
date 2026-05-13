@@ -12,7 +12,7 @@
   mason.setup()
   mason_lspconfig.setup({
     ensure_installed = {
-      "tsserver",
+      "ts_ls",
       "eslint",
       -- ほかに必要ならここに追加
     },
@@ -43,7 +43,7 @@
     end,
   })
 
-lspconfig.tsserver.setup{
+lspconfig.ts_ls.setup{
   filetypes = { "typescript", "typescriptreact", "typescript.tsx" },
   root_dir = lspconfig.util.root_pattern("package.json", "tsconfig.json", "jsconfig.json", ".git"),
 }

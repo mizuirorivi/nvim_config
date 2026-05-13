@@ -16,9 +16,13 @@ require("nvim-tree").setup({
   renderer = {
     group_empty = true,
   },
-  filters = {
-    dotfiles = true,
+  update_focused_file = {
+    enable = true,
+    update_root = true,
   },
+  hijack_directories = {
+    enable = true, auto_open = false,
+  }
 })
 function is_current_buffer_file()
   local bufnr = vim.api.nvim_get_current_buf()
@@ -46,9 +50,14 @@ function mytreetoggle()
   log:onlysave('current buffer is not file')
 end
 
-vim.api.nvim_set_keymap('n', '<C-b>', ':lua mytreetoggle()<CR>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<C-b>', ':NvimTreeToggle<CR>', { noremap = true, silent = true })
 
 require('nvim-treesitter.configs').setup {
-  ensure_installed = { "vimdoc", "vim", "lua" },
+  root_dirs = { ".git", "package.json", ".root" },
+  sync_root_with_cwd = true,
+  update_focused_file = {
+    enable = true,
+    update_root = true,
+  },
   -- other configuration options
 }
