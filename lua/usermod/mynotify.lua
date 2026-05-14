@@ -28,20 +28,52 @@ function M:onlysave(message)
     notify = self
   })
 end
-function M:my_notify(message)
+local function silence_notification_filter(message, title)
+  local msg = tostring(message or "")
+  local ttl = tostring(title or "")
+
+  if ttl:find("null%-ls") and msg:find("rustfmt") then
+    return true
+  end
+
+  if ttl:find("which%-key") and msg:find("There were issues reported") then
+    return true
+  end
+
+  if msg:find("failed to load builtin rustfmt") then
+    return true
+  end
+
+  if msg:find("There were issues reported with your which%-key mappings") then
+    return true
+  end
+
+  return false
+end
+function M:my_notify(message, level, opts)
+  level = level or self.level
+  opts = vim.tbl_extend("force", self.options or {}, opts or {})
+  local title = opts.title or self.title
+
+  if silence_notification_filter(message, title) then
+    return
+  end
+
   local status, notify = pcall(require, 'notify')
   if status then
     notify.setup(self.setup_option)
-    notify(message, self.level, self.options)
+    notify(message, level, opts)
     table.insert(_G.saved_notifications, {
       message = message,
-      level = self.level,
-      title = self.title,
+      level = level,
+      title = title,
       time = os.time(),
       notify = self
     })
   else
-    vim.notify(message, self.level)
+    vim.schedule(function()
+      vim.notify(tostring(message), level, { title = title })
+    end)
   end
 end
 

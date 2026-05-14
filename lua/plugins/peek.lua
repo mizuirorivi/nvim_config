@@ -63,5 +63,3 @@ if is_i3wm_installed() then
   else
     print("i3wm is not installed, PeekOpen command will not be available.")
 end
-
-
