@@ -1,16 +1,6 @@
-local NotifyManager = require('usermod.mynotify').new()
-local default_notify = NotifyManager
-
--- -- vim.notifyを置き換える
--- vim.notify = function(msg, level, opts)
---    default_notify:new({
---       options = {
---          title = opts.title,
---          level = level,
---          timeout = 10,
---       }
---    })
---   default_notify:onlysave(msg)
---   vim.api.notify_once(msg, level, opts)
--- end
---
+vim.keymap.set("n", "c", function()
+  local ok_noice, noice = pcall(require, "noice")
+  if ok_noice then noice.cmd("dismiss") end
+  local ok_notify, notify = pcall(require, "notify")
+  if ok_notify then notify.dismiss({ silent = true, pending = true }) end
+end, { desc = "Dismiss all notifications" })

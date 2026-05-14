@@ -21,7 +21,8 @@ vim.g.mapleader = " "
 vim.g.maplocalleader = "\\"
 
 require("lazy").setup({
-  -- Setup lazy.nvim
+  { "vim-denops/denops.vim",   lazy = false },
+  { "lambdalisue/kensaku.vim", dependencies = { "vim-denops/denops.vim" } },
   {
     "goolord/alpha-nvim",
     -- dependencies = { 'echasnovski/mini.icons' },
@@ -142,20 +143,7 @@ require("lazy").setup({
     end
   },
 
-  {
-    'neovim/nvim-lspconfig',
-    config = function()
-      local lspconfig = require('lspconfig')
-      local mason_lspconfig = require('mason-lspconfig')
-
-      mason_lspconfig.setup_handlers({
-        -- Default handler (for servers without specific config)
-        function(server_name)
-          lspconfig[server_name].setup({})
-        end,
-      })
-    end,
-  },
+  'neovim/nvim-lspconfig',
   -- lsp 環境設定
   'prabirshrestha/vim-lsp',
   'mattn/vim-lsp-settings',
@@ -184,7 +172,16 @@ require("lazy").setup({
   'joom/vim-commentary',
 
   -- notify
-  'rcarriga/nvim-notify',
+  {
+    "folke/noice.nvim",
+    event = "VeryLazy",
+    dependencies = {
+      "MunifTanjim/nui.nvim",
+      "rcarriga/nvim-notify",
+    },
+    config = false, -- lua/plugins/noice.lua で setup する
+  },
+
   -- 'MunifTanjim/nui.nvim',
 
   -- for vim debug
@@ -256,8 +253,13 @@ require("lazy").setup({
     'williamboman/mason-lspconfig.nvim',
     config = function()
       require('mason-lspconfig').setup({
-        ensure_installed = { "clangd", "pyright", "lua_ls" }, -- List of servers to auto-install
-        automatic_installation = true,                        -- Automatically install configured servers
+        ensure_installed = { "clangd", "pyright", "lua_ls" },
+        automatic_installation = true,
+        handlers = {
+          function(server_name)
+            require('lspconfig')[server_name].setup({})
+          end,
+        },
       })
     end,
   },
@@ -286,16 +288,42 @@ require("lazy").setup({
   -- for markdown
   'ixru/nvim-markdown',
   {
-    'toppair/peek.nvim',
-    build = 'deno task --quiet build:fast',
+    "toppair/peek.nvim",
+    ft = "markdown",
+    build = "deno task --quiet build:fast",
     config = function()
-      require("peek").setup()
-      vim.api.nvim_create_user_command('PeekOpen', require('peek').open, {})
-      vim.api.nvim_create_user_command('PeekClose', require('peek').close, {})
+      local peek = require("peek")
+      local uv = vim.uv or vim.loop
+      local sysname = uv.os_uname().sysname
+
+      local app
+
+      if sysname == "Linux" then
+        app = { "/usr/bin/google-chrome", "--new-window" }
+
+      elseif sysname == "Darwin" then
+        app = "webview"
+      elseif sysname == "Windows_NT" then
+        -- Windows
+        app = "webview"
+      else
+        app = "webview"
+      end
+
+      peek.setup({
+        app = app,
+        filetype = { "markdown" },
+      })
+
+      vim.api.nvim_create_user_command("PeekOpen", function()
+        peek.open()
+      end, {desc="Open Markdown Preview Window"})
+
+      vim.api.nvim_create_user_command("PeekClose", function()
+        peek.close()
+      end, {desc="Close Markdown Preview Window"})
     end,
   },
-
-
   -- for completion AI
   {
     "github/copilot.vim",
@@ -390,16 +418,16 @@ require("lazy").setup({
     "yetone/avante.nvim",
     event = "VeryLazy",
     lazy = false,
-    version = false,   -- Set this to "*" to always pull the latest release version, or set it to false to update to the latest code changes.
+    version = false, -- Set this to "*" to always pull the latest release version, or set it to false to update to the latest code changes.
     opts = {
       -- add any opts here
       -- for example
       provider = "openai",
       openai = {
         endpoint = "https://api.openai.com/v1",
-        model = "gpt-4o",   -- your desired model (or use gpt-4o, etc.)
-        timeout = 30000,    -- timeout in milliseconds
-        temperature = 0,    -- adjust if needed
+        model = "gpt-4o", -- your desired model (or use gpt-4o, etc.)
+        timeout = 30000,  -- timeout in milliseconds
+        temperature = 0,  -- adjust if needed
         max_tokens = 4096,
       },
     },
@@ -411,29 +439,12 @@ require("lazy").setup({
       "nvim-lua/plenary.nvim",
       "MunifTanjim/nui.nvim",
       --- The below dependencies are optional,
-      "echasnovski/mini.pick",           -- for file_selector provider mini.pick
-      "nvim-telescope/telescope.nvim",   -- for file_selector provider telescope
-      "hrsh7th/nvim-cmp",                -- autocompletion for avante commands and mentions
-      "ibhagwan/fzf-lua",                -- for file_selector provider fzf
-      "nvim-tree/nvim-web-devicons",     -- or echasnovski/mini.icons
-      "zbirenbaum/copilot.lua",          -- for providers='copilot'
-      {
-        -- support for image pasting
-        "HakonHarnes/img-clip.nvim",
-        event = "VeryLazy",
-        opts = {
-          -- recommended settings
-          default = {
-            embed_image_as_base64 = false,
-            prompt_for_file_name = false,
-            drag_and_drop = {
-              insert_mode = true,
-            },
-            -- required for Windows users
-            use_absolute_path = true,
-          },
-        },
-      },
+      "echasnovski/mini.pick",         -- for file_selector provider mini.pick
+      "nvim-telescope/telescope.nvim", -- for file_selector provider telescope
+      "hrsh7th/nvim-cmp",              -- autocompletion for avante commands and mentions
+      "ibhagwan/fzf-lua",              -- for file_selector provider fzf
+      "nvim-tree/nvim-web-devicons",   -- or echasnovski/mini.icons
+      "zbirenbaum/copilot.lua",        -- for providers='copilot'
       {
         -- Make sure to set this up properly if you have lazy=true
         'MeanderingProgrammer/render-markdown.nvim',
@@ -442,19 +453,12 @@ require("lazy").setup({
         },
         ft = { "markdown", "Avante" },
       },
-      {
-        "folke/flash.nvim",
-        event = "VeryLazy",
-        ---@type Flash.Config
-        opts = {},
-        keys = {
-          { "s",     mode = { "n", "x", "o" }, function() require("flash").jump() end,              desc = "Flash" },
-          { "S",     mode = { "n", "x", "o" }, function() require("flash").treesitter() end,        desc = "Flash Treesitter" },
-          { "r",     mode = "o",               function() require("flash").remote() end,            desc = "Remote Flash" },
-          { "R",     mode = { "o", "x" },      function() require("flash").treesitter_search() end, desc = "Treesitter Search" },
-          { "<c-s>", mode = { "c" },           function() require("flash").toggle() end,            desc = "Toggle Flash Search" },
-        },
-      }
-    },
-  }
+    }
+  },
+  {
+    "folke/flash.nvim",
+    event = "VeryLazy",
+    dependencies = { "lambdalisue/vim-kensaku" },
+    config = function() require("plugins.flash") end,
+  },
 })

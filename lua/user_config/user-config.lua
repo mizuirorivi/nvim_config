@@ -1,18 +1,18 @@
-vim.cmd[[
+vim.cmd [[
 set noautochdir
-set number             
-set autoindent         
-set shiftwidth=2       
-set expandtab          
-set splitright         
-set clipboard=unnamed,unnamedplus 
-set hls                
+set number
+set autoindent
+set shiftwidth=2
+set expandtab
+set splitright
+set clipboard=unnamed,unnamedplus
+set hls
 inoremap <silent> jj <ESC>
-set list    
+set list
 " show tab as "  "
 set listchars=tab:\ \ ,eol:$
-tnoremap <Esc> <C-\><C-n>  
-noremap  <A-k> <C-w>W 
+tnoremap <Esc> <C-\><C-n>
+noremap  <A-k> <C-w>W
 inoremap <A-k> <Esc><C-w>W
 tnoremap <A-k> <C-\><C-n><C-w>W
 noremap  <A-o> <C-w>o
@@ -28,10 +28,10 @@ set ignorecase smartcase
 ]]
 vim.api.nvim_set_keymap('n', '<C-s>', ':saveas ', { noremap = true })
 local function map(mode, lhs, rhs, opts)
-  local options = {noremap = true}
+  local options = { noremap = true }
   if opts then options = vim.tbl_extend('force', options, opts) end
   vim.api.nvim_set_keymap(mode, lhs, rhs, options)
 end
-
+vim.g["denops#deno"] = vim.fn.expand("$HOME/.deno/bin/deno")
 local M = {}
-return M 
+return M

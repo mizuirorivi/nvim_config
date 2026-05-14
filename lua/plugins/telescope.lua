@@ -20,7 +20,7 @@ wk.setup({
 wk.register({
   f = {
     name = "find Something",
-    c = { "<cmd>Telescope commands<cr>", "find command and execute" },
+    c = { "<cmd>SearchCommands<cr>", "find command and execute" },
 
     t = {
       function()
