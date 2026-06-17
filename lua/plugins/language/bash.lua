@@ -1,5 +1,3 @@
-local lspconfig = require'lspconfig'
-
 local on_attach = require('plugins/language/onattach').on_attach
 
 vim.api.nvim_create_autocmd("FileType", {
@@ -13,12 +11,14 @@ vim.api.nvim_create_autocmd("FileType", {
     vim.opt_local.errorformat = "%f:%l:%c: %trror: %m,%f:%l:%c: %tarning: %m,%f:%l:%c: %tote: %m"
   end
 })
---linter
+
 vim.g.ale_linters = {
   sh = {'shellcheck'},
 }
-lspconfig.bashls.setup({
+
+vim.lsp.config('bashls', {
   filetypes = { "sh", "bash", "zsh" },
   cmd = { "bash-language-server", "start" },
   on_attach = on_attach,
 })
+vim.lsp.enable('bashls')

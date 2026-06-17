@@ -8,17 +8,17 @@ end
 local wk = require("which-key")
 
 function _G.tabcreate()
+  -- capture cwd BEFORE tabnew; autocmds (nvim-rooter, nvim-tree BufEnter) fire
+  -- during tabnew and can reset cwd before we get a chance to read it
+  local cwd = vim.fn.getcwd()
+  vim.g.pwd = cwd
+  tabbylog:onlysave('tabcreate: cwd before tabnew = ' .. cwd)
   vim.cmd('tabnew')
-  -- vim.g.pwd is from nerdtree.lua in plugins/nertree.lua.
-  -- why bother changing current directory by vim.g.pwd from nertree.lua, because tabby change current directory to wrong one when new tab is opend
-  if vim.g.pwd == nil then
-    tabbylog:onlysave('vim.g.pwd is nil and cwd is ' .. vim.fn.getcwd())
-    vim.g.pwd = vim.fn.getcwd()
-  else 
-    tabbylog:onlysave('vim.g.pwd is ' .. vim.g.pwd)
-  end
-  
-  vim.api.nvim_set_current_dir(vim.g.pwd)
+  -- vim.schedule defers until after all BufEnter autocmds triggered by tabnew finish
+  vim.schedule(function()
+    vim.api.nvim_set_current_dir(cwd)
+    tabbylog:onlysave('tabcreate: restored cwd = ' .. cwd)
+  end)
 end
 
 -- Register key mappings with which-key

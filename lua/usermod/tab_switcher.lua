@@ -11,7 +11,8 @@ function M.switch_tab()
     local tabnr = vim.api.nvim_tabpage_get_number(tab)
     local win = vim.api.nvim_tabpage_get_win(tab)
     local buf = vim.api.nvim_win_get_buf(win)
-    local buf_name = vim.fn.fnamemodify(vim.api.nvim_buf_get_name(buf), ':t')
+    local raw = vim.api.nvim_buf_get_name(buf)
+    local buf_name = raw ~= '' and (vim.fn.fnamemodify(raw, ':h:t') .. '/' .. vim.fn.fnamemodify(raw, ':t')) or '[No Name]'
     local display_name = string.format('Tab %d: %s', tabnr, buf_name)
     table.insert(tab_list, { tabnr = tabnr, label = display_name })
   end

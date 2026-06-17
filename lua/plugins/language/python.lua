@@ -1,28 +1,25 @@
-local lspconfig = require('lspconfig')
-
--- 汎用的な on_attach 関数をインポート
 local on_attach = require('plugins/language/onattach').on_attach
 
--- Define settings for python
 local pyright_settings = {
     python = {
         analysis = {
-            typeCheckingMode = "basic",  -- Options: "off", "basic", "strict"
+            typeCheckingMode = "basic",
             autoSearchPaths = true,
             useLibraryCodeForTypes = true,
-            diagnosticMode = "workspace",  -- "openFilesOnly" or "workspace"
+            diagnosticMode = "workspace",
         },
     },
 }
-local null_ls = require("null-ls")
--- Register black as a formatter
-null_ls.register(null_ls.builtins.formatting.black.with({
-    extra_args = { "--fast" },
-}))
--- Setup Lua language server with these settings and on_attach
-lspconfig.pyright.setup({
 
+local ok_null, null_ls = pcall(require, "null-ls")
+if ok_null then
+  null_ls.register(null_ls.builtins.formatting.black.with({
+      extra_args = { "--fast" },
+  }))
+end
+
+vim.lsp.config('pyright', {
     settings = pyright_settings,
     on_attach = on_attach,
 })
-
+vim.lsp.enable('pyright')
