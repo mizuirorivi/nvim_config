@@ -46,7 +46,7 @@ require("lazy").setup({
     'notjedi/nvim-rooter.lua',
     config = function()
       require('nvim-rooter').setup {
-        rooter_patterns = { '.git', '.hg', '.svn', 'Makefile', 'package.json', 'Cargo.toml' },
+        rooter_patterns = { '.root', '.git', '.hg', '.svn', 'Makefile', 'package.json', 'Cargo.toml' },
         trigger_patterns = { '*' },
         manual = false,
         fallback_to_parent = true,
@@ -142,11 +142,10 @@ require("lazy").setup({
       require('telescope').load_extension('fzf')
     end
   },
+  -- markdown heading
+  "crispgm/telescope-heading.nvim",
 
   'neovim/nvim-lspconfig',
-  -- lsp 環境設定
-  'prabirshrestha/vim-lsp',
-  'mattn/vim-lsp-settings',
   'antosha417/nvim-lsp-file-operations',
   {
     'hrsh7th/nvim-cmp',
@@ -253,13 +252,8 @@ require("lazy").setup({
     'williamboman/mason-lspconfig.nvim',
     config = function()
       require('mason-lspconfig').setup({
-        ensure_installed = { "clangd", "pyright", "lua_ls" },
+        ensure_installed = { "clangd", "pyright", "lua_ls", "clojure_lsp", "fennel_language_server" },
         automatic_installation = true,
-        handlers = {
-          function(server_name)
-            require('lspconfig')[server_name].setup({})
-          end,
-        },
       })
     end,
   },
@@ -271,6 +265,60 @@ require("lazy").setup({
       "nvimtools/none-ls.nvim",
     },
   },
+  -- Lisp structural editing (paredit)
+  {
+    "julienvincent/nvim-paredit",
+    ft = { "clojure", "fennel", "lisp", "scheme", "racket", "janet" },
+    config = function()
+      require("nvim-paredit").setup({
+        use_default_keys = true,
+        cursor_behaviour = "follow",
+        indent = { enabled = true, default_amount = 2 },
+        extension = {},
+      })
+    end,
+  },
+
+  -- Rainbow parentheses
+  {
+    "HiPhish/rainbow-delimiters.nvim",
+    event = "BufReadPost",
+    config = function()
+      local rainbow = require("rainbow-delimiters")
+      vim.g.rainbow_delimiters = {
+        strategy = {
+          [""] = rainbow.strategy["global"],
+          vim = rainbow.strategy["local"],
+        },
+        query = {
+          [""] = "rainbow-delimiters",
+          lua = "rainbow-blocks",
+        },
+        highlight = {
+          "RainbowDelimiterRed",
+          "RainbowDelimiterYellow",
+          "RainbowDelimiterBlue",
+          "RainbowDelimiterOrange",
+          "RainbowDelimiterGreen",
+          "RainbowDelimiterViolet",
+          "RainbowDelimiterCyan",
+        },
+      }
+    end,
+  },
+
+  -- Conjure: REPL integration for Lisp family
+  {
+    "Olical/conjure",
+    ft = { "clojure", "fennel", "lisp", "scheme", "racket", "janet", "hy" },
+    config = function()
+      vim.g["conjure#log#hud#width"] = 1.0
+      vim.g["conjure#log#hud#height"] = 0.4
+      vim.g["conjure#log#hud#anchor"] = "SE"
+      vim.g["conjure#mapping#prefix"] = "\\"
+    end,
+  },
+
   -- ruby 開発環境
   { 'vim-ruby/vim-ruby',    ft = 'ruby' },
 
@@ -288,7 +336,7 @@ require("lazy").setup({
   -- for markdown
   'ixru/nvim-markdown',
   {
-    "toppair/peek.nvim",
+    "mizuirorivi/peek.nvim",
     ft = "markdown",
     build = "deno task --quiet build:fast",
     config = function()
@@ -300,7 +348,6 @@ require("lazy").setup({
 
       if sysname == "Linux" then
         app = { "/usr/bin/google-chrome", "--new-window" }
-
       elseif sysname == "Darwin" then
         app = "webview"
       elseif sysname == "Windows_NT" then
@@ -313,15 +360,27 @@ require("lazy").setup({
       peek.setup({
         app = app,
         filetype = { "markdown" },
+        tab = true,
+        useful_web = true,
       })
 
       vim.api.nvim_create_user_command("PeekOpen", function()
         peek.open()
-      end, {desc="Open Markdown Preview Window"})
+      end, { desc = "Open Markdown Preview Window" })
 
       vim.api.nvim_create_user_command("PeekClose", function()
         peek.close()
-      end, {desc="Close Markdown Preview Window"})
+      end, { desc = "Close Markdown Preview Window" })
+
+      vim.api.nvim_create_user_command('PeekUsefulON', function()
+        require('peek').set_useful_web(true)
+      end, { desc = "Open Markdown Preview Window with Useful" })
+      vim.api.nvim_create_user_command('PeekUsefulOFF', function()
+        require('peek').set_useful_web(false)
+      end, { desc = "Turn Off Useful on Markdown Preview Window" })
+      vim.api.nvim_create_user_command('PeekUsefulToggle', function()
+        require('peek').toggle_useful_web()
+      end, { desc = "Switch Feature of Useful on Markdown Preview Window" })
     end,
   },
   -- for completion AI
@@ -333,6 +392,8 @@ require("lazy").setup({
   -- "Exafunction/codeium.vim",
   {
     "jackMort/ChatGPT.nvim",
+    lazy = true,
+    cmd = { "ChatGPT", "ChatGPTActAs", "ChatGPTCompleteCode", "ChatGPTEditWithInstructions", "ChatGPTRun" },
     config = function()
       require("chatgpt").setup({
         openai_params = {
@@ -416,8 +477,8 @@ require("lazy").setup({
   },
   {
     "yetone/avante.nvim",
-    event = "VeryLazy",
-    lazy = false,
+    lazy = true,
+    cmd = { "AvanteAsk", "AvanteChat", "AvanteToggle", "AvanteFocus", "AvanteRefresh", "AvanteSwitchProvider", "AvanteEdit" },
     version = false, -- Set this to "*" to always pull the latest release version, or set it to false to update to the latest code changes.
     opts = {
       -- add any opts here

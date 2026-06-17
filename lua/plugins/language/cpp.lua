@@ -1,7 +1,6 @@
-local lspconfig = require 'lspconfig'
-
 local on_attach = require('plugins/language/onattach').on_attach
-lspconfig.clangd.setup({
+
+vim.lsp.config('clangd', {
   cmd = {
     "clangd",
     "--background-index",
@@ -12,6 +11,9 @@ lspconfig.clangd.setup({
     "--fallback-style=llvm"
   },
   filetypes = { "c", "cpp", "cc" },
-  root_dir = lspconfig.util.root_pattern("compile_commands.json", "compile_flags.txt", ".git"),
+  root_dir = function(fname)
+    return vim.fs.root(fname, { "compile_commands.json", "compile_flags.txt", ".git" })
+  end,
   on_attach = on_attach,
 })
+vim.lsp.enable('clangd')

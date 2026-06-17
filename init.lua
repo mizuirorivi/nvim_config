@@ -47,6 +47,13 @@ vim.api.nvim_buf_get_commands = function(buf, opts)
   return result
 end
 
+-- vim.diagnostic.disable was removed in Neovim 0.10+; shim for plugins that still use it
+if vim.diagnostic.disable == nil then
+  vim.diagnostic.disable = function(bufnr, _ns)
+    vim.diagnostic.enable(false, { bufnr = bufnr })
+  end
+end
+
 require('usermod.notify_intercept')
 require('usermod.treesitter_fix')
 local requirePath = require("usermod.require_path").requirePath
@@ -58,6 +65,8 @@ requirePath('plugins/language')
 require('usermod.command_search')
 require('usermod.tab_switcher')
 require('usermod.lsp_diagnostics')
+require('usermod.split')
+require('usermod.pasteimage')
 require "colorscheme"
 
 vim.cmd[[

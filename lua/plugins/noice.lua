@@ -1,3 +1,7 @@
+require("notify").setup({
+  background_colour = "#000000",
+})
+
 require("noice").setup({
   lsp = {
     override = {
@@ -40,6 +44,10 @@ require("noice").setup({
   },
 
   routes = {
+    {
+      filter = { event = "msg_showmode" },
+      opts = { skip = true },
+    },
     {
       filter = {
         event = "notify",
