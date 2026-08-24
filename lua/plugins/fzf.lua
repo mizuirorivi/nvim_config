@@ -24,20 +24,63 @@ local function tab_drop_selected(selected, opts)
   end
 end
 
--- 多段fuzzy検索: tab(=ctrl-i)で今の絞り込み結果を候補リストとして固定して
--- 空クエリから次の段を絞り込める。ctrl-oで前の段に戻る(リストもクエリも復元)。
--- ステージスタックは bin/fzf-stage が管理。tabを潰すので手動の複数選択は
--- shift-tab か ctrl-a(全選択)で行う。
-local stage_bin = vim.fn.stdpath('config') .. '/bin/fzf-stage'
-local stage_keymap = {
-  fzf = {
-    -- 注: per-picker keymapはdeep-mergeで継承されるので [1]=true を入れてはいけない
-    -- (入れるとcreate_fzf_bindsがbooleanをbind文字列として舐めてエラーになる)
-    ["start"] = ("execute-silent(%s reset)"):format(stage_bin),
-    ["tab"] = ("transform(%s push-transform)"):format(stage_bin),
-    ["ctrl-o"] = ("transform(%s pop-transform)"):format(stage_bin),
-  },
-}
+-- Ctrl-aで選択した候補をCtrl-iで次段へ送り、Ctrl-oで前段へ戻す。
+-- fzf-luaのRPCを使うため、外部スクリプトやOS固有コマンドは不要。
+local function staged_picker(picker, opts)
+  local base_opts = vim.deepcopy(opts or {})
+  local prepare_opts = vim.deepcopy(base_opts)
+  prepare_opts._start = false
+
+  local _, initial_cmd, picker_opts = picker(prepare_opts)
+  if not initial_cmd or not picker_opts then
+    return
+  end
+
+  local core = require('fzf-lua.core')
+  local shell = require('fzf-lua.shell')
+  local stack = {}
+  local candidates
+  local restored_query = ''
+
+  local candidates_cmd = shell.stringify_data(function()
+    return candidates or {}
+  end, picker_opts)
+
+  local query_cmd = shell.stringify_data(function()
+    return restored_query
+  end, picker_opts)
+
+  local push_cmd = shell.stringify_data(function(items)
+    local query = table.remove(items) or ''
+    if query == '' or #items == 0 then
+      return ''
+    end
+
+    stack[#stack + 1] = { candidates = candidates, query = query }
+    candidates = items
+    return ('reload(%s)+clear-query+deselect-all'):format(candidates_cmd)
+  end, picker_opts, '{+} {q}')
+
+  local pop_cmd = shell.stringify_data(function()
+    local previous = table.remove(stack)
+    if not previous then
+      return ''
+    end
+
+    candidates = previous.candidates
+    restored_query = previous.query
+    local source_cmd = candidates and candidates_cmd or initial_cmd
+    return ('reload(%s)+transform-query(%s)+deselect-all'):format(source_cmd, query_cmd)
+  end, picker_opts)
+
+  picker_opts.keymap.fzf['tab'] = ('transform(%s)'):format(push_cmd)
+  picker_opts.keymap.fzf['ctrl-o'] = ('transform(%s)'):format(pop_cmd)
+  picker_opts.__call_fn = function(call_opts)
+    return staged_picker(picker, vim.tbl_deep_extend('force', vim.deepcopy(base_opts), call_opts or {}))
+  end
+  picker_opts._start = nil
+  return core.fzf_wrap(initial_cmd, picker_opts)
+end
 
 -- <C-p> と <C-f> で共有する検索専用ルート。Neovim の cwd は変更しない。
 local search_root
@@ -84,9 +127,9 @@ local search_help_entries = {
   'Alt-d     Change the shared search root without changing pwd',
   'C-g       Resume the last picker and its query',
   '?         Open this searchable C-p / C-f help',
-  'Tab       Start another fuzzy-filter stage',
-  'Ctrl-o    Return to the previous fuzzy-filter stage',
   'Ctrl-a    Toggle selection of all entries',
+  'Ctrl-i    Use selected entries as the next fuzzy stage',
+  'Ctrl-o    Return to the previous fuzzy stage',
   'Shift-tab Toggle selection of the current entry',
   'Enter     Open the selected entry',
   'Ctrl-t    Open selected entries in tabs, reusing existing tabs',
@@ -136,7 +179,7 @@ require('fzf-lua').setup({
   keymap = {
     fzf = {
       true, -- デフォルトバインド(F4プレビュー切替, ctrl-f/bページ送り等)を継承
-      -- 絞り込んだ候補を全選択/解除（この後 Ctrl-T で全部タブに開ける）
+      -- 絞り込んだ候補を全選択/解除（Ctrl-Iで次段、Ctrl-Tでタブに開く）
       ["ctrl-a"] = "toggle-all",
     },
   },
@@ -163,14 +206,12 @@ require('fzf-lua').setup({
     find_opts = "-type f",
     -- Add Makefile to the list of recognized file types
     file_ignore_patterns = {"^.git/", "^node_modules/", "^vendor/"},
-    keymap = stage_keymap,
     actions = {
       ["alt-d"] = change_root_action,
       ["?"] = search_help_action,
     },
   },
   grep = {
-    keymap = stage_keymap,
     actions = {
       ["alt-d"] = change_root_action,
       ["?"] = search_help_action,
@@ -194,7 +235,7 @@ require('fzf-lua').setup({
 -- end
 
 vim.keymap.set('n', '<C-P>', function()
-  require('fzf-lua').files({
+  staged_picker(require('fzf-lua').files, {
     prompt = 'Files> ',
     cwd = current_search_root(),
     winopts = {
@@ -205,7 +246,7 @@ vim.keymap.set('n', '<C-P>', function()
 end, { silent = true, desc = 'Find files in search root' })
 
 vim.keymap.set('n', '<C-F>', function()
-  require('fzf-lua').grep({
+  staged_picker(require('fzf-lua').grep, {
     prompt = 'Grep> ',
     cwd = current_search_root(),
     winopts = {
