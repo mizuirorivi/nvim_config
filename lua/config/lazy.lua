@@ -92,6 +92,14 @@ require("lazy").setup({
   { 'yorickpeterse/nvim-window', url = 'https://gitlab.com/yorickpeterse/nvim-window.git' },
   'sunjon/shade.nvim',
 
+  {
+    'arnamak/stay-centered.nvim',
+    opts = {
+      allow_scroll_move = true,
+      disable_on_mouse = true,
+    },
+  },
+
   -- color theme
   { 'ellisonleao/gruvbox.nvim' },
   -- color theme switcher

@@ -1,0 +1,55 @@
+#!/bin/sh
+# fzf-stage: fzf内の多段fuzzy検索用ステージスタック
+# tab(=ctrl-i)で現在の絞り込み結果を新しい候補リストとして固定(push)し、
+# 空クエリから続きを絞り込める。ctrl-oで前の段へ戻る(pop)。
+#
+# スタック構造: 段iから押したpushがエントリn=i+1を作る
+#   n.matched = 段iの絞り込み結果 = 段i+1の入力リスト
+#   n.query   = 段iで使っていたクエリ
+# 段0の入力リストはファイルに持たず $FZF_DEFAULT_COMMAND の再実行で復元する
+# (fzf-luaはfiles/grep等の非liveなpickerで元コマンドをこの環境変数で渡す)
+inst=global
+[ -n "$NVIM" ] && inst=$(basename "$NVIM")
+dir="${XDG_CACHE_HOME:-$HOME/.cache}/nvim/fzf-stage/$inst"
+mkdir -p "$dir"
+
+count() { cat "$dir/count" 2>/dev/null || echo 0; }
+
+case "$1" in
+  reset)
+    rm -rf "$dir" && mkdir -p "$dir"
+    ;;
+  push) # $2: 絞り込み後の候補ファイル({+f})  $3: クエリ({q})
+    n=$(( $(count) + 1 ))
+    cp "$2" "$dir/$n.matched"
+    printf '%s' "$3" > "$dir/$n.query"
+    printf '%s\n' "$n" > "$dir/count"
+    ;;
+  top-matched)
+    cat "$dir/$(count).matched"
+    ;;
+  pop) # 戻り先の段の入力リストを出力してスタックを1段減らす
+    n=$(count)
+    if [ "$n" -ge 2 ]; then
+      cat "$dir/$((n - 1)).matched"
+    else
+      eval "$FZF_DEFAULT_COMMAND"
+    fi
+    printf '%s\n' "$((n - 1))" > "$dir/count"
+    ;;
+  push-transform) # tab用: クエリ空 or マッチ0件なら何もしない
+    if [ "${FZF_MATCH_COUNT:-0}" -gt 0 ] && [ -n "$FZF_QUERY" ]; then
+      printf 'deselect-all+select-all+execute-silent(%s push {+f} {q})+reload(%s top-matched)+clear-query+deselect-all' "$0" "$0"
+    fi
+    ;;
+  pop-transform) # ctrl-o用: スタックが空なら何もしない
+    n=$(count)
+    # 段0の復元手段が無い場合(パイプ入力等)は最後の1段は戻れない
+    if [ "$n" -eq 1 ] && [ -z "$FZF_DEFAULT_COMMAND" ]; then
+      exit 0
+    fi
+    if [ "$n" -gt 0 ]; then
+      printf 'transform-query(cat %s/%s.query)+reload(%s pop)+deselect-all' "$dir" "$n" "$0"
+    fi
+    ;;
+esac

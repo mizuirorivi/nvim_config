@@ -9,6 +9,7 @@ vim.cmd[[
   set list
   nnoremap <leader>sv :source $MYVIMRC<CR>
 ]]
+
 vim.api.nvim_create_autocmd("VimEnter", {
   callback = function()
     vim.fn.chdir(vim.fn.getcwd()) -- シェルのCWDを明示的に設定
@@ -66,6 +67,8 @@ require('usermod.command_search')
 require('usermod.tab_switcher')
 require('usermod.lsp_diagnostics')
 require('usermod.split')
+require('usermod.buffers')
+require('usermod.backup_files')
 require('usermod.pasteimage')
 require "colorscheme"
 
@@ -74,5 +77,3 @@ vim.cmd[[
   map <CS-c> "+y
   map <CS-v> "+p
 ]]
-
-

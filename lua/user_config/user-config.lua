@@ -64,6 +64,7 @@ vim.api.nvim_create_autocmd({ "RecordingEnter", "RecordingLeave" }, {
 })
 
 vim.g["denops#deno"] = vim.fn.expand("$HOME/.deno/bin/deno")
+vim.g["denops_server_addr"] = "127.0.0.1:32123"
 vim.g.rooter_manual_only = 1
 local M = {}
 return M

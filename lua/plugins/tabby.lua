@@ -42,9 +42,20 @@ wk.register({
         require('usermod.tab_switcher').switch_tab()
       end,
       "Switch Tab"
+    },
+    u = {
+      function()
+        require('usermod.tab_switcher').unique_tabs()
+      end,
+      "Unique Tabs (close duplicates)"
     }
   }
 }, { prefix = "<space>" })
+
+-- タブ一覧をユニーク化するコマンド
+vim.api.nvim_create_user_command('TabUnique', function()
+  require('usermod.tab_switcher').unique_tabs()
+end, { desc = 'Close duplicate tabs (save modified buffers first)' })
 
 vim.api.nvim_set_keymap("n", "<leader>ta", ":lua _G.tabcreate()<CR>", { noremap = true })
 vim.api.nvim_set_keymap("n", "<leader>te", ":tabedit ", { noremap = true })
@@ -66,6 +77,8 @@ vim.api.nvim_set_keymap("n", "tc", ":tabclose<CR>", { noremap = true })
 vim.api.nvim_set_keymap("n", "tn", ":tabn<CR>", { noremap = true })
 vim.api.nvim_set_keymap("n", "tp", ":tabp<CR>", { noremap = true })
 vim.api.nvim_set_keymap("n", "tl", ':lua require("usermod.tab_switcher").switch_tab()<CR>', { noremap = true })
+vim.api.nvim_set_keymap("n", "tu", ':lua require("usermod.tab_switcher").unique_tabs()<CR>', { noremap = true })
+vim.api.nvim_set_keymap("n", "<leader>tu", ':lua require("usermod.tab_switcher").unique_tabs()<CR>', { noremap = true })
 -- move current tab to previous position
 vim.api.nvim_set_keymap("n", "tmp", ":-tabmove<CR>", { noremap = true })
 vim.api.nvim_set_keymap("n", "tmn", ":+tabmove<CR>", { noremap = true })
