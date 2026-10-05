@@ -28,3 +28,4 @@ vim.lsp.config('rust_analyzer', {
   settings = rust_analyzer_settings,
   on_attach = on_attach,
 })
+vim.lsp.enable('rust_analyzer')

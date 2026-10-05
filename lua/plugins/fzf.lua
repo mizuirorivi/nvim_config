@@ -175,7 +175,16 @@ local search_help_action = {
   header = false,
 }
 
+-- Ubuntu 24.04 ships an older fzf that does not understand newer color keys
+-- such as `selected-bg`. Prefer the user-installed current binary when present.
+local fzf_bin = vim.fn.exepath('fzf')
+local user_fzf = vim.fn.expand('~/.local/bin/fzf')
+if vim.fn.executable(user_fzf) == 1 then
+  fzf_bin = user_fzf
+end
+
 require('fzf-lua').setup({
+  fzf_bin = fzf_bin ~= '' and fzf_bin or nil,
   keymap = {
     fzf = {
       true, -- デフォルトバインド(F4プレビュー切替, ctrl-f/bページ送り等)を継承

@@ -1,12 +1,3 @@
-require('telescope').load_extension('heading')
-
-require('nvim-treesitter.configs').setup({
-  ensure_installed = {
-    'markdown',
-    'rst',
-  },
-})
-
 local telescope = require('telescope')
 telescope.setup({
   extensions = {
@@ -17,7 +8,7 @@ telescope.setup({
 })
 
 
-telescope.load_extension('heading')
+pcall(telescope.load_extension, 'heading')
 
 
 vim.api.nvim_create_user_command("MarkdownHeading", function()

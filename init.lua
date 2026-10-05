@@ -1,4 +1,15 @@
 
+vim.g.mapleader = " "
+vim.g.maplocalleader = "\\"
+
+if vim.fn.has("win32") == 1 then
+  -- Keep external commands compatible even when Neovim inherits PowerShell.
+  vim.opt.shell = vim.env.COMSPEC or "cmd.exe"
+  vim.opt.shellcmdflag = "/d /s /c"
+  vim.opt.shellquote = ""
+  vim.opt.shellxquote = ""
+end
+
 vim.cmd[[
   set termguicolors
   set undolevels=200
@@ -55,25 +66,59 @@ if vim.diagnostic.disable == nil then
   end
 end
 
-require('usermod.notify_intercept')
-require('usermod.treesitter_fix')
-local requirePath = require("usermod.require_path").requirePath
-requirePath('config')
-requirePath('user_config')
-requirePath('plugins')
-requirePath('colorscheme')
-requirePath('plugins/language')
-require('usermod.command_search')
-require('usermod.tab_switcher')
-require('usermod.lsp_diagnostics')
-require('usermod.split')
-require('usermod.buffers')
-require('usermod.backup_files')
-require('usermod.pasteimage')
-require "colorscheme"
+-- Profile is resolved from $NVIM_PROFILE, then <config>/.profile, else "full".
+-- The full branch keeps the original require order unchanged; only the light
+-- branch and the profile lookup are new.
+local profile = require('usermod.profile')
+
+if profile.is_light then
+  require('usermod.notify_intercept')
+  require('usermod.light') -- bootstrap lazy.nvim with the minimal plugin set
+  local requirePath = require("usermod.require_path").requirePath
+  requirePath('user_config')
+  requirePath('colorscheme')
+  require('usermod.tab_switcher')
+  require('usermod.split')
+  require('usermod.buffers')
+  require('usermod.pasteimage')
+  require "colorscheme"
+else
+  require('usermod.notify_intercept')
+  require('usermod.treesitter_fix')
+  local requirePath = require("usermod.require_path").requirePath
+  requirePath('config')
+  requirePath('user_config')
+  requirePath('plugins')
+  requirePath('colorscheme')
+  requirePath('plugins/language')
+  require('usermod.command_search')
+  require('usermod.tab_switcher')
+  require('usermod.lsp_diagnostics')
+  require('usermod.split')
+  require('usermod.buffers')
+  require('usermod.backup_files')
+  require('usermod.pasteimage')
+  require "colorscheme"
+end
+
+local python = ""
+if vim.fn.has("win32") == 1 then
+  local python_root = vim.fs.joinpath(vim.env.LOCALAPPDATA or "", "Programs", "Python")
+  local candidates = vim.fn.glob(vim.fs.joinpath(python_root, "Python*", "python.exe"), true, true)
+  table.sort(candidates, function(a, b)
+    local a_version = tonumber(a:match("Python(%d+)[/\\]python%.exe$")) or 0
+    local b_version = tonumber(b:match("Python(%d+)[/\\]python%.exe$")) or 0
+    return a_version > b_version
+  end)
+  python = candidates[1] or ""
+end
+if python == "" then python = vim.fn.exepath("python3") end
+if python == "" then python = vim.fn.exepath("python") end
+if python ~= "" then
+  vim.g.python3_host_prog = python
+end
 
 vim.cmd[[
-  let g:python3_host_prog = '/usr/bin/python'
   map <CS-c> "+y
   map <CS-v> "+p
 ]]

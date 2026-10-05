@@ -1,24 +1,18 @@
--- Bootstrap lazy.nvim
-local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
-if not (vim.uv or vim.loop).fs_stat(lazypath) then
-  local lazyrepo = "https://github.com/folke/lazy.nvim.git"
-  local out = vim.fn.system({ "git", "clone", "--filter=blob:none", "--branch=stable", lazyrepo, lazypath })
-  if vim.v.shell_error ~= 0 then
-    vim.api.nvim_echo({
-      { "Failed to clone lazy.nvim:\n", "ErrorMsg" },
-      { out,                            "WarningMsg" },
-      { "\nPress any key to exit..." },
-    }, true, {})
-    vim.fn.getchar()
-    os.exit(1)
-  end
-end
-vim.opt.rtp:prepend(lazypath)
+-- Bootstrap lazy.nvim (shared with the light profile via usermod.lazy_bootstrap).
+require("usermod.lazy_bootstrap").ensure()
 -- Make sure to setup `mapleader` and `maplocalleader` before
 -- loading lazy.nvim so that mappings are correct.
 -- This is also a good place to setup other settings (vim.opt)
 vim.g.mapleader = " "
 vim.g.maplocalleader = "\\"
+
+local is_windows = vim.fn.has("win32") == 1
+local fzf_native_build = is_windows
+    and "cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release -DCMAKE_POLICY_VERSION_MINIMUM=3.5 && cmake --build build --config Release --target install"
+  or "make"
+local avante_build = is_windows
+    and "powershell -NoProfile -ExecutionPolicy Bypass -File Build.ps1 -BuildFromSource false"
+  or "make"
 
 require("lazy").setup({
   { "vim-denops/denops.vim",   lazy = false },
@@ -54,17 +48,18 @@ require("lazy").setup({
     end
   },
   -- Key Biding Help
-  "folke/which-key.nvim",
-  event = "VeryLazy",
+  { "folke/which-key.nvim", event = "VeryLazy" },
 
-  'mrjones2014/legendary.nvim',
-  version = 'v2.13.9',
-  -- since legendary.nvim handles all your keymaps/commands,
-  -- its recommended to load legendary.nvim before other plugins
-  priority = 10000,
-  lazy = false,
-  -- sqlite is only needed if you want to use frecency sorting
-  dependencies = { 'kkharji/sqlite.lua' },
+  {
+    'mrjones2014/legendary.nvim',
+    version = 'v2.13.9',
+    -- since legendary.nvim handles all your keymaps/commands,
+    -- its recommended to load legendary.nvim before other plugins
+    priority = 10000,
+    lazy = false,
+    -- sqlite is only needed if you want to use frecency sorting
+    dependencies = { 'kkharji/sqlite.lua' },
+  },
 
 
   -- undo tree
@@ -75,10 +70,17 @@ require("lazy").setup({
 
   {
     "nvim-treesitter/nvim-treesitter",
+    branch = "master",
+    lazy = false,
     build = ":TSUpdate",
     config = function()
       require("nvim-treesitter.configs").setup {
-        ensure_installed = "all",
+        sync_install = true,
+        ensure_installed = {
+          "bash", "c", "clojure", "cpp", "css", "fennel", "html",
+          "javascript", "json", "lua", "markdown", "markdown_inline",
+          "python", "query", "rust", "typescript", "vim", "vimdoc",
+        },
         highlight = { enable = true },
       }
     end
@@ -123,15 +125,15 @@ require("lazy").setup({
   {
     'nvim-telescope/telescope.nvim',
     tag = '0.1.6',
-    dependencies = { {
+    dependencies = {
       'nvim-lua/plenary.nvim',
       "debugloop/telescope-undo.nvim",
-    } }
+    },
   },
   'nvim-telescope/telescope-ui-select.nvim',
   {
     'nvim-telescope/telescope-fzf-native.nvim',
-    build = 'make',
+    build = fzf_native_build,
     config = function()
       require('telescope').setup {
         defaults = {
@@ -147,7 +149,7 @@ require("lazy").setup({
         }
       }
       -- FZFエクステンションをロード
-      require('telescope').load_extension('fzf')
+      pcall(require('telescope').load_extension, 'fzf')
     end
   },
   -- markdown heading
@@ -258,10 +260,18 @@ require("lazy").setup({
   },
   {
     'williamboman/mason-lspconfig.nvim',
+    dependencies = {
+      'williamboman/mason.nvim',
+      'neovim/nvim-lspconfig',
+    },
     config = function()
       require('mason-lspconfig').setup({
-        ensure_installed = { "clangd", "pyright", "lua_ls", "clojure_lsp", "fennel_language_server" },
-        automatic_installation = true,
+        ensure_installed = {
+          "bashls", "clangd", "clojure_lsp", "eslint",
+          "fennel_language_server", "lua_ls", "pyright",
+          "rust_analyzer", "ts_ls",
+        },
+        automatic_enable = true,
       })
     end,
   },
@@ -271,6 +281,10 @@ require("lazy").setup({
     dependencies = {
       "williamboman/mason.nvim",
       "nvimtools/none-ls.nvim",
+    },
+    opts = {
+      ensure_installed = { "black", "prettier" },
+      automatic_installation = true,
     },
   },
   -- Lisp structural editing (paredit)
@@ -346,6 +360,7 @@ require("lazy").setup({
   {
     "mizuirorivi/peek.nvim",
     ft = "markdown",
+    cmd = { "PeekOpen", "PeekClose", "PeekUsefulON", "PeekUsefulOFF", "PeekUsefulToggle" },
     build = "deno task --quiet build:fast",
     config = function()
       local peek = require("peek")
@@ -355,7 +370,15 @@ require("lazy").setup({
       local app
 
       if sysname == "Linux" then
-        app = { "/usr/bin/google-chrome", "--new-window" }
+        local host_chrome = "/mnt/c/Program Files/Google/Chrome/Application/chrome.exe"
+        if vim.fn.has("wsl") == 1 and vim.fn.executable(host_chrome) == 1 then
+          -- Open the preview in the Windows host browser instead of WSLg Chrome.
+          app = { host_chrome, "--new-window" }
+        elseif vim.fn.executable("google-chrome") == 1 then
+          app = { vim.fn.exepath("google-chrome"), "--new-window" }
+        else
+          app = "browser"
+        end
       elseif sysname == "Darwin" then
         app = "webview"
       elseif sysname == "Windows_NT" then
@@ -413,7 +436,6 @@ require("lazy").setup({
           top_p = 0.1,
           n = 1,
         },
-        api_key_cmd = "echo 'my_key'"
       })
     end,
     dependencies = {
@@ -447,7 +469,6 @@ require("lazy").setup({
   },
   {
     "kawre/leetcode.nvim",
-    build = ":TSUpdate html",
     dependencies = {
       "nvim-telescope/telescope.nvim",
       "nvim-lua/plenary.nvim", -- required by telescope
@@ -501,8 +522,7 @@ require("lazy").setup({
       },
     },
     -- if you want to build from source then do `make BUILD_FROM_SOURCE=true`
-    build = "make",
-    -- build = "powershell -ExecutionPolicy Bypass -File Build.ps1 -BuildFromSource false" -- for windows
+    build = avante_build,
     dependencies = {
       "stevearc/dressing.nvim",
       "nvim-lua/plenary.nvim",
