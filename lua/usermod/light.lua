@@ -64,6 +64,22 @@ require("lazy").setup({
     config = function() require("plugins.undotree") end,
   },
 
+  -- Keymap menu (space) + keymap search. Light variant of
+  -- plugins/which-key.lua that does not pull in telescope.
+  {
+    "folke/which-key.nvim",
+    lazy = false,
+    config = function() require("usermod.light_keymaps").setup() end,
+  },
+
+  -- Terminal (space+ss), same options as the full profile.
+  {
+    "akinsho/toggleterm.nvim",
+    version = "*",
+    lazy = false,
+    config = function() require("plugins.toggleterm") end,
+  },
+
   -- Status line.
   { "vim-airline/vim-airline", lazy = false },
 }, {

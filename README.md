@@ -19,7 +19,8 @@ This config ships two profiles:
 
 - **full** (default): everything (LSP/mason, treesitter, telescope, cmp, AI plugins, ...).
 - **light**: editing-focused minimal set for small machines (e.g. 8 GB RAM).
-  fzf-lua, nvim-tree, autopairs, surround, undotree, gruvbox, airline.
+  fzf-lua, nvim-tree, autopairs, surround, undotree, which-key, toggleterm,
+  gruvbox, airline.
   No LSP, treesitter, telescope, cmp, AI, denops.
 
 ### selecting a profile
